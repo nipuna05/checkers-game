@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkers</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #1a1a2e; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: sans-serif; }
+    #game { display: flex; flex-direction: column; align-items: center; padding: 1rem; }
+    #status { font-size: 15px; font-weight: 500; color: #fff; margin-bottom: 12px; min-height: 24px; }
+    #board { display: grid; grid-template-columns: repeat(8, 60px); grid-template-rows: repeat(8, 60px); border: 2px solid #555; border-radius: 8px; overflow: hidden; }
+    .cell { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .cell.light { background: #f0d9b5; }
+    .cell.dark { background: #b58863; }
+    .cell.selected { outline: 3px solid #f6f669; outline-offset: -3px; }
+    .cell.valid-move { background: #7fc97f; }
+    .cell.jump-move { background: #e87f3a; }
+    .piece { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(0,0,0,0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.1s; user-select: none; }
+    .piece:hover { transform: scale(1.05); }
+    .piece.red { background: radial-gradient(circle at 35% 35%, #ff6b6b, #c0392b); }
+    .piece.black { background: radial-gradient(circle at 35% 35%, #555, #111); }
+    .piece.king::after { content: '♛'; font-size: 18px; color: gold; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+    #controls { display: flex; gap: 12px; margin-top: 16px; }
+    button { padding: 8px 20px; border: 1px solid #555; background: transparent; color: #fff; border-radius: 8px; cursor: pointer; font-size: 14px; }
+    button:hover { background: rgba(255,255,255,0.1); }
+    #score { display: flex; gap: 24px; margin-bottom: 12px; }
+    .score-box { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 6px 16px; text-align: center; }
+    .score-label { font-size: 12px; color: #aaa; }
+    .score-val { font-size: 18px; font-weight: 500; color: #fff; }
+    #legend { display: flex; gap: 16px; margin-bottom: 10px; font-size: 12px; color: #aaa; align-items: center; }
+    .legend-dot { width: 14px; height: 14px; border-radius: 3px; display: inline-block; margin-right: 4px; vertical-align: middle; }
+  </style>
+</head>
+<body>
+<div id="game">
+  <div id="score">
+    <div class="score-box"><div class="score-label">Red pieces</div><div class="score-val" id="red-count">12</div></div>
+    <div class="score-box"><div class="score-label">Black pieces</div><div class="score-val" id="black-count">12</div></div>
+  </div>
+  <div id="status">Black's turn</div>
+  <div id="legend">
+    <span><span class="legend-dot" style="background:#7fc97f"></span>Move</span>
+    <span><span class="legend-dot" style="background:#e87f3a"></span>Jump (optional)</span>
+  </div>
+  <div id="board"></div>
+  <div id="controls">
+    <button onclick="resetGame()">New game</button>
+  </div>
+</div>
+<script>
+  const boardEl = document.getElementById('board');
+  const statusEl = document.getElementById('status');
+  let board = [], selected = null, currentPlayer = 'black', validMoves = [], chainPiece = null;
+  function initBoard() {
+    board = Array.from({length: 8}, () => Array(8).fill(null));
+    for (let r = 0; r < 3; r++)
+      for (let c = 0; c < 8; c++)
+        if ((r + c) % 2 === 1) board[r][c] = {color: 'black', king: false};
+    for (let r = 5; r < 8; r++)
+      for (let c = 0; c < 8; c++)
+        if ((r + c) % 2 === 1) board[r][c] = {color: 'red', king: false};
+  }
+  function getJumps(r, c, piece, b) {
+    const dirs = piece.king ? [-1, 1] : piece.color === 'red' ? [-1] : [1];
+    const jumps = [];
+    for (const dr of dirs)
+      for (const dc of [-1, 1]) {
+        const mr = r+dr, mc = c+dc, lr = r+2*dr, lc = c+2*dc;
+        if (lr>=0&&lr<8&&lc>=0&&lc<8&&b[mr]&&b[mr][mc]&&b[mr][mc].color!==piece.color&&!b[lr][lc])
+          jumps.push({r:lr,c:lc,jumpR:mr,jumpC:mc,isJump:true});
+      }
+    return jumps;
+  }
+  function getMoves(r, c, piece, b) {
+    const dirs = piece.king ? [-1, 1] : piece.color === 'red' ? [-1] : [1];
+    const moves = [];
+    for (const dr of dirs)
+      for (const dc of [-1, 1]) {
+        const nr = r+dr, nc = c+dc;
+        if (nr>=0&&nr<8&&nc>=0&&nc<8&&!b[nr][nc])
+          moves.push({r:nr,c:nc,jumpR:null,jumpC:null,isJump:false});
+      }
+    return moves;
+  }
+  function getAllMovesForPlayer(player, b) {
+    const all = [];
+    for (let r = 0; r < 8; r++)
+      for (let c = 0; c < 8; c++)
+        if (b[r][c] && b[r][c].color === player)
+          all.push(...getMoves(r,c,b[r][c],b), ...getJumps(r,c,b[r][c],b));
+    return all;
+  }
+  function renderBoard() {
+    boardEl.innerHTML = '';
+    for (let r = 0; r < 8; r++) {
+      for (let c = 0; c < 8; c++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell ' + ((r+c)%2===0 ? 'light' : 'dark');
+        if (selected && selected.r===r && selected.c===c) cell.classList.add('selected');
+        const move = validMoves.find(m => m.r===r && m.c===c);
+        if (move) cell.classList.add(move.isJump ? 'jump-move' : 'valid-move');
+        cell.onclick = () => handleClick(r, c);
+        if (board[r][c]) {
+          const p = document.createElement('div');
+          p.className = 'piece ' + board[r][c].color + (board[r][c].king ? ' king' : '');
+          cell.appendChild(p);
+        }
+        boardEl.appendChild(cell);
+      }
+    }
+    document.getElementById('red-count').textContent = board.flat().filter(p=>p&&p.color==='red').length;
+    document.getElementById('black-count').textContent = board.flat().filter(p=>p&&p.color==='black').length;
+  }
+  function handleClick(r, c) {
+    if (chainPiece) {
+      if (r===chainPiece.r && c===chainPiece.c) return;
+      const move = validMoves.find(m=>m.r===r&&m.c===c);
+      if (move) { executeMove(move); return; }
+      chainPiece = null; selected = null; validMoves = []; renderBoard(); return;
+    }
+    const piece = board[r][c];
+    if (piece && piece.color === currentPlayer) {
+      selected = {r, c};
+      validMoves = [...getMoves(r,c,piece,board), ...getJumps(r,c,piece,board)];
+      renderBoard(); return;
+    }
+    if (selected) {
+      const move = validMoves.find(m=>m.r===r&&m.c===c);
+      if (move) { executeMove(move); return; }
+    }
+    selected = null; validMoves = []; renderBoard();
+  }
+  function executeMove(move) {
+    const p = board[selected.r][selected.c];
+    board[move.r][move.c] = p;
+    board[selected.r][selected.c] = null;
+    if (move.jumpR !== null) board[move.jumpR][move.jumpC] = null;
+    if ((p.color==='red'&&move.r===0)||(p.color==='black'&&move.r===7)) p.king = true;
+    const moreJumps = move.isJump ? getJumps(move.r,move.c,p,board) : [];
+    if (moreJumps.length) {
+      chainPiece = {r:move.r,c:move.c}; selected = {r:move.r,c:move.c};
+      validMoves = moreJumps; renderBoard();
+      statusEl.textContent = (currentPlayer==='red'?'Red':'Black') + ': chain jump available!';
+      return;
+    }
+    chainPiece = null; selected = null; validMoves = [];
+    currentPlayer = currentPlayer === 'red' ? 'black' : 'red';
+    const redLeft = board.flat().filter(p=>p&&p.color==='red').length;
+    const blackLeft = board.flat().filter(p=>p&&p.color==='black').length;
+    if (redLeft===0) { statusEl.textContent='Black wins!'; renderBoard(); return; }
+    if (blackLeft===0) { statusEl.textContent='Red wins!'; renderBoard(); return; }
+    if (!getAllMovesForPlayer(currentPlayer,board).length) {
+      statusEl.textContent=(currentPlayer==='red'?'Black':'Red')+' wins! (no moves left)';
+      renderBoard(); return;
+    }
+    statusEl.textContent = (currentPlayer==='red'?'Red':'Black') + "'s turn";
+    renderBoard();
+  }
+  function resetGame() {
+    initBoard(); selected=null; validMoves=[]; currentPlayer='black'; chainPiece=null;
+    statusEl.textContent="Black's turn"; renderBoard();
+  }
+  initBoard();
+  renderBoard();
+</script>
+</body>
+</html>
