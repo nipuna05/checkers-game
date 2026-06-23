@@ -5,18 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Checkers Game</title>
 <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#1a1a2e;min-height:100vh;font-family:sans-serif;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px}
-h1{font-size:22px;font-weight:700;margin-bottom:16px;letter-spacing:1px;color:#f0d9b5}
+body{background:#1a1a2e;min-height:100vh;font-family:sans-serif;color:#fff;display:flex;flex-direction:column;align-items:center;padding:16px}
+h1{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:1px;color:#f0d9b5}
 
-/* --- MENU --- */
+/* AUTH BAR */
+#auth-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-size:13px;width:100%;max-width:500px;justify-content:flex-end;flex-wrap:wrap}
+#auth-bar button{padding:5px 14px;border:1px solid #666;background:transparent;color:#ccc;border-radius:7px;cursor:pointer;font-size:12px}
+#auth-bar button:hover{background:rgba(255,255,255,0.1)}
+#auth-user{color:#7fc97f;font-size:12px}
+
+/* AUTH MODAL */
+#auth-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center}
+#auth-modal.open{display:flex}
+#auth-box{background:#1e2040;border:1px solid #444;border-radius:14px;padding:28px 28px 24px;width:100%;max-width:360px}
+#auth-box h2{font-size:18px;margin-bottom:16px;color:#f0d9b5;text-align:center}
+#auth-box input{width:100%;padding:9px 12px;margin-bottom:10px;border-radius:8px;border:1px solid #555;background:#111;color:#fff;font-size:14px}
+#auth-box .auth-btn{width:100%;padding:10px;border-radius:8px;border:none;background:#b58863;color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px}
+#auth-box .auth-btn:hover{background:#c9a07b}
+#auth-msg{font-size:12px;color:#e87f3a;text-align:center;min-height:18px;margin-top:6px}
+.auth-toggle{text-align:center;font-size:12px;color:#aaa;margin-top:10px;cursor:pointer}
+.auth-toggle span{color:#7fc97f;text-decoration:underline;cursor:pointer}
+#auth-close{float:right;background:none;border:none;color:#aaa;font-size:18px;cursor:pointer;margin-top:-8px}
+
+/* MENU */
 #menu{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:360px}
 .menu-btn{width:100%;padding:14px 20px;font-size:16px;font-weight:600;border:2px solid #b58863;background:rgba(181,136,99,0.15);color:#f0d9b5;border-radius:12px;cursor:pointer;transition:all .2s}
 .menu-btn:hover{background:rgba(181,136,99,0.35);transform:translateY(-2px)}
-.menu-title{font-size:13px;color:#aaa;margin-bottom:4px}
 
-/* --- ONLINE LOBBY --- */
+/* LOBBY */
 #lobby{display:none;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:400px}
 .lobby-box{background:rgba(255,255,255,0.07);border:1px solid #444;border-radius:10px;padding:14px 18px;width:100%;text-align:center}
 .lobby-box input{width:100%;padding:8px 12px;border-radius:8px;border:1px solid #666;background:#111;color:#fff;font-size:15px;margin-top:8px;text-align:center}
@@ -25,7 +44,7 @@ h1{font-size:22px;font-weight:700;margin-bottom:16px;letter-spacing:1px;color:#f
 #room-link-box{word-break:break-all;font-size:13px;color:#7fc97f;margin-top:6px;display:none}
 #conn-status{font-size:13px;color:#aaa;margin-top:6px}
 
-/* --- GAME --- */
+/* GAME */
 #game-area{display:none;flex-direction:column;align-items:center;width:100%}
 #top-bar{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:500px;margin-bottom:8px;gap:8px}
 #mode-label{font-size:12px;color:#aaa;background:rgba(255,255,255,0.07);padding:4px 10px;border-radius:6px}
@@ -41,11 +60,9 @@ h1{font-size:22px;font-weight:700;margin-bottom:16px;letter-spacing:1px;color:#f
 .legend-dot{width:13px;height:13px;border-radius:3px;display:inline-block;margin-right:3px;vertical-align:middle}
 #board{display:grid;grid-template-columns:repeat(8,60px);grid-template-rows:repeat(8,60px);border:2px solid #555;border-radius:8px;overflow:hidden}
 .cell{width:60px;height:60px;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.cell.light{background:#f0d9b5}
-.cell.dark{background:#b58863}
+.cell.light{background:#f0d9b5}.cell.dark{background:#b58863}
 .cell.selected{outline:3px solid #f6f669;outline-offset:-3px}
-.cell.valid-move{background:#7fc97f}
-.cell.jump-move{background:#e87f3a}
+.cell.valid-move{background:#7fc97f}.cell.jump-move{background:#e87f3a}
 .piece{width:44px;height:44px;border-radius:50%;border:3px solid rgba(0,0,0,0.3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .1s;user-select:none}
 .piece:hover{transform:scale(1.05)}
 .piece.red{background:radial-gradient(circle at 35% 35%,#ff6b6b,#c0392b)}
@@ -55,16 +72,59 @@ h1{font-size:22px;font-weight:700;margin-bottom:16px;letter-spacing:1px;color:#f
 #controls button{padding:7px 18px;border:1px solid #555;background:transparent;color:#fff;border-radius:8px;cursor:pointer;font-size:13px}
 #controls button:hover{background:rgba(255,255,255,0.1)}
 #online-share{margin-top:10px;font-size:12px;color:#7fc97f;text-align:center;word-break:break-all;display:none}
+#save-indicator{font-size:11px;color:#7fc97f;margin-top:6px;min-height:16px;text-align:center}
+
+/* HISTORY */
+#history-area{display:none;flex-direction:column;align-items:center;width:100%;max-width:600px}
+#history-area h2{font-size:18px;color:#f0d9b5;margin-bottom:14px}
+.game-card{background:rgba(255,255,255,0.07);border:1px solid #444;border-radius:10px;padding:12px 16px;margin-bottom:10px;width:100%;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background .2s}
+.game-card:hover{background:rgba(255,255,255,0.12)}
+.game-card-info{font-size:13px;color:#ccc}
+.game-card-info b{color:#f0d9b5;font-size:14px}
+.game-card-btn{padding:5px 14px;border:1px solid #7fc97f;background:transparent;color:#7fc97f;border-radius:7px;cursor:pointer;font-size:12px}
+.game-card-btn:hover{background:rgba(127,201,127,0.15)}
+#no-games{color:#aaa;font-size:14px;text-align:center;padding:20px}
+
+/* REPLAY */
+#replay-area{display:none;flex-direction:column;align-items:center;width:100%}
+#replay-controls{display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap;justify-content:center}
+#replay-controls button{padding:6px 16px;border:1px solid #555;background:transparent;color:#fff;border-radius:8px;cursor:pointer;font-size:13px}
+#replay-controls button:hover{background:rgba(255,255,255,0.1)}
+#replay-controls button.active{background:rgba(181,136,99,0.4);border-color:#b58863}
+#replay-step{font-size:13px;color:#aaa;margin-top:6px}
+#replay-board{display:grid;grid-template-columns:repeat(8,60px);grid-template-rows:repeat(8,60px);border:2px solid #555;border-radius:8px;overflow:hidden}
+
 @media(max-width:520px){
-  #board{grid-template-columns:repeat(8,44px);grid-template-rows:repeat(8,44px)}
-  .cell{width:44px;height:44px}
-  .piece{width:32px;height:32px}
+  #board,#replay-board{grid-template-columns:repeat(8,44px);grid-template-rows:repeat(8,44px)}
+  .cell{width:44px;height:44px}.piece{width:32px;height:32px}
   .piece.king::after{font-size:13px}
 }
 </style>
 </head>
 <body>
+
+<!-- AUTH MODAL -->
+<div id="auth-modal">
+<div id="auth-box">
+  <button id="auth-close" onclick="closeAuth()">✕</button>
+  <h2 id="auth-title">Sign In</h2>
+  <input id="auth-email" type="email" placeholder="Email address" />
+  <input id="auth-pass" type="password" placeholder="Password" />
+  <button class="auth-btn" id="auth-submit" onclick="submitAuth()">Sign In</button>
+  <div id="auth-msg"></div>
+  <div class="auth-toggle" id="auth-toggle-text">Don't have an account? <span onclick="toggleAuthMode()">Sign Up</span></div>
+</div>
+</div>
+
 <h1>♟ Checkers</h1>
+
+<!-- AUTH BAR -->
+<div id="auth-bar">
+  <span id="auth-user"></span>
+  <button id="history-btn" style="display:none" onclick="showHistory()">📋 My Games</button>
+  <button id="login-btn" onclick="openAuth('signin')">Sign In / Sign Up</button>
+  <button id="logout-btn" style="display:none" onclick="signOut()">Sign Out</button>
+</div>
 
 <!-- MAIN MENU -->
 <div id="menu">
@@ -107,21 +167,284 @@ h1{font-size:22px;font-weight:700;margin-bottom:16px;letter-spacing:1px;color:#f
     <span><span class="legend-dot" style="background:#e87f3a"></span>Jump</span>
   </div>
   <div id="board"></div>
+  <div id="save-indicator"></div>
   <div id="online-share"></div>
   <div id="controls">
     <button onclick="resetGame()">New Game</button>
   </div>
 </div>
 
+<!-- HISTORY AREA -->
+<div id="history-area">
+  <div style="display:flex;align-items:center;gap:12px;width:100%;justify-content:space-between;max-width:600px;margin-bottom:12px">
+    <h2 style="margin:0">📋 My Games (Last 7 Days)</h2>
+    <button onclick="backToMenu()" style="padding:5px 14px;border:1px solid #666;background:transparent;color:#ccc;border-radius:8px;cursor:pointer;font-size:12px">← Menu</button>
+  </div>
+  <div id="games-list" style="width:100%"></div>
+</div>
+
+<!-- REPLAY AREA -->
+<div id="replay-area">
+  <div style="display:flex;align-items:center;gap:12px;width:100%;justify-content:space-between;max-width:500px;margin-bottom:12px">
+    <div style="font-size:14px;color:#f0d9b5" id="replay-title">Game Replay</div>
+    <button onclick="showHistory()" style="padding:5px 14px;border:1px solid #666;background:transparent;color:#ccc;border-radius:8px;cursor:pointer;font-size:12px">← History</button>
+  </div>
+  <div id="score" style="margin-bottom:8px">
+    <div class="score-box"><div class="score-label">Black</div><div class="score-val" id="r-black-count">12</div></div>
+    <div class="score-box"><div class="score-label">Red</div><div class="score-val" id="r-red-count">12</div></div>
+  </div>
+  <div id="replay-board"></div>
+  <div id="replay-step">Step 0 / 0</div>
+  <div id="replay-controls">
+    <button onclick="replayFirst()">⏮</button>
+    <button onclick="replayPrev()">◀</button>
+    <button id="replay-play-btn" onclick="toggleReplayPlay()">▶ Play</button>
+    <button onclick="replayNext()">▶</button>
+    <button onclick="replayLast()">⏭</button>
+    <select id="replay-speed" onchange="updateReplaySpeed()" style="background:#222;color:#fff;border:1px solid #555;border-radius:6px;padding:4px 8px;cursor:pointer">
+      <option value="1000">Slow</option>
+      <option value="600" selected>Normal</option>
+      <option value="250">Fast</option>
+    </select>
+  </div>
+</div>
+
 <script>
+// ===================== SUPABASE =====================
+const SUPABASE_URL = 'https://pwotocfqzuzxzxayvziw.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3b3RvY2ZxenV6eHp4YXl2eml3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxOTY3MDMsImV4cCI6MjA5Nzc3MjcwM30.JxiBMkQ0rdnFiB5WNXQD_qwgBRKEeySUYLo9RunFPWw';
+let supa = null;
+let currentUser = null;
+let currentSessionId = null;
+let sessionMoves = [];
+let sessionSnapshots = [];
+let authMode = 'signin';
+
+function initSupabase() {
+  try {
+    supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    supa.auth.onAuthStateChange((event, session) => {
+      currentUser = session?.user || null;
+      updateAuthBar();
+    });
+    supa.auth.getSession().then(({ data: { session } }) => {
+      currentUser = session?.user || null;
+      updateAuthBar();
+    });
+  } catch(e) { console.error('Supabase init error:', e); }
+}
+
+function updateAuthBar() {
+  const userEl = document.getElementById('auth-user');
+  const loginBtn = document.getElementById('login-btn');
+  const logoutBtn = document.getElementById('logout-btn');
+  const historyBtn = document.getElementById('history-btn');
+  if (currentUser) {
+    userEl.textContent = '👤 ' + (currentUser.email || 'User');
+    loginBtn.style.display = 'none';
+    logoutBtn.style.display = '';
+    historyBtn.style.display = '';
+  } else {
+    userEl.textContent = '';
+    loginBtn.style.display = '';
+    logoutBtn.style.display = 'none';
+    historyBtn.style.display = 'none';
+  }
+}
+
+function openAuth(mode) {
+  authMode = mode || 'signin';
+  document.getElementById('auth-title').textContent = authMode === 'signin' ? 'Sign In' : 'Sign Up';
+  document.getElementById('auth-submit').textContent = authMode === 'signin' ? 'Sign In' : 'Create Account';
+  document.getElementById('auth-toggle-text').innerHTML = authMode === 'signin'
+    ? "Don't have an account? <span onclick=\"toggleAuthMode()\">Sign Up</span>"
+    : "Already have an account? <span onclick=\"toggleAuthMode()\">Sign In</span>";
+  document.getElementById('auth-msg').textContent = '';
+  document.getElementById('auth-modal').classList.add('open');
+}
+
+function closeAuth() { document.getElementById('auth-modal').classList.remove('open'); }
+
+function toggleAuthMode() {
+  authMode = authMode === 'signin' ? 'signup' : 'signin';
+  openAuth(authMode);
+}
+
+async function submitAuth() {
+  const email = document.getElementById('auth-email').value.trim();
+  const pass = document.getElementById('auth-pass').value;
+  const msgEl = document.getElementById('auth-msg');
+  if (!email || !pass) { msgEl.textContent = 'Please fill in all fields'; return; }
+  msgEl.textContent = 'Please wait...';
+  try {
+    let result;
+    if (authMode === 'signin') {
+      result = await supa.auth.signInWithPassword({ email, password: pass });
+    } else {
+      result = await supa.auth.signUp({ email, password: pass });
+    }
+    if (result.error) {
+      msgEl.textContent = result.error.message;
+    } else {
+      if (authMode === 'signup' && !result.data.session) {
+        msgEl.textContent = 'Check your email to confirm your account!';
+      } else {
+        closeAuth();
+      }
+    }
+  } catch(e) { msgEl.textContent = 'Error: ' + e.message; }
+}
+
+async function signOut() {
+  if (supa) await supa.auth.signOut();
+  currentUser = null;
+  updateAuthBar();
+}
+
+// ===================== GAME SESSION SAVING =====================
+async function startNewSession(mode) {
+  currentSessionId = null;
+  sessionMoves = [];
+  sessionSnapshots = [];
+  if (!currentUser || !supa) return;
+  try {
+    const { data, error } = await supa.from('game_sessions').insert({
+      user_id: currentUser.id, mode: mode, moves: [], board_snapshots: [],
+    }).select().single();
+    if (!error && data) {
+      currentSessionId = data.id;
+      setSaveIndicator('💾 Saving game...');
+    }
+  } catch(e) {}
+}
+
+async function recordMove(fromR, fromC, move, boardSnapshot) {
+  if (!currentUser || !currentSessionId || !supa) return;
+  const moveData = { fromR, fromC, toR: move.r, toC: move.c, jumpR: move.jumpR, jumpC: move.jumpC, isJump: move.isJump, player: currentPlayer };
+  sessionMoves.push(moveData);
+  sessionSnapshots.push(JSON.parse(JSON.stringify(boardSnapshot)));
+  try {
+    await supa.from('game_sessions').update({
+      moves: sessionMoves, board_snapshots: sessionSnapshots
+    }).eq('id', currentSessionId);
+    setSaveIndicator('💾 Game saved');
+  } catch(e) {}
+}
+
+async function endSession(result) {
+  if (!currentUser || !currentSessionId || !supa) return;
+  try {
+    await supa.from('game_sessions').update({
+      result: result, ended_at: new Date().toISOString(),
+      moves: sessionMoves, board_snapshots: sessionSnapshots
+    }).eq('id', currentSessionId);
+    setSaveIndicator('✅ Game saved! View in My Games');
+  } catch(e) {}
+}
+
+function setSaveIndicator(msg) {
+  const el = document.getElementById('save-indicator');
+  if (el) { el.textContent = msg; setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 4000); }
+}
+
+// ===================== HISTORY =====================
+async function showHistory() {
+  if (!currentUser || !supa) { openAuth('signin'); return; }
+  document.getElementById('menu').style.display = 'none';
+  document.getElementById('game-area').style.display = 'none';
+  document.getElementById('lobby').style.display = 'none';
+  document.getElementById('replay-area').style.display = 'none';
+  document.getElementById('history-area').style.display = 'flex';
+  const listEl = document.getElementById('games-list');
+  listEl.innerHTML = '<div style="color:#aaa;text-align:center;padding:20px">Loading...</div>';
+  try {
+    const weekAgo = new Date(Date.now() - 7*24*60*60*1000).toISOString();
+    const { data, error } = await supa.from('game_sessions')
+      .select('id,mode,result,started_at,ended_at,moves')
+      .eq('user_id', currentUser.id)
+      .gte('started_at', weekAgo)
+      .order('started_at', { ascending: false });
+    if (error) { listEl.innerHTML = '<div id="no-games">Error loading games: ' + error.message + '</div>'; return; }
+    if (!data || data.length === 0) { listEl.innerHTML = '<div id="no-games">No games found in the last 7 days.<br>Play a game to see it here!</div>'; return; }
+    listEl.innerHTML = '';
+    data.forEach(g => {
+      const date = new Date(g.started_at).toLocaleString();
+      const moves = g.moves ? g.moves.length : 0;
+      const duration = g.ended_at ? Math.round((new Date(g.ended_at) - new Date(g.started_at)) / 1000) + 's' : 'In progress';
+      const card = document.createElement('div');
+      card.className = 'game-card';
+      card.innerHTML = `<div class="game-card-info"><b>${g.mode === 'ai' ? '🤖 vs Computer' : g.mode === 'local' ? '👥 Pass & Play' : '🌐 Online'}</b><br>${date} · ${moves} moves · ${duration}<br><span style="color:${g.result ? '#7fc97f' : '#aaa'}">${g.result || 'In progress'}</span></div><button class="game-card-btn" onclick="watchReplay('${g.id}')">▶ Watch</button>`;
+      listEl.appendChild(card);
+    });
+  } catch(e) { listEl.innerHTML = '<div id="no-games">Error: ' + e.message + '</div>'; }
+}
+
+// ===================== REPLAY =====================
+let replaySnapshots = [];
+let replayStep = 0;
+let replayInterval = null;
+let replaySpeed = 600;
+
+async function watchReplay(gameId) {
+  if (!supa) return;
+  document.getElementById('history-area').style.display = 'none';
+  document.getElementById('replay-area').style.display = 'flex';
+  const titleEl = document.getElementById('replay-title');
+  titleEl.textContent = 'Loading...';
+  try {
+    const { data, error } = await supa.from('game_sessions')
+      .select('mode,result,board_snapshots,started_at').eq('id', gameId).single();
+    if (error || !data) { titleEl.textContent = 'Error loading game'; return; }
+    replaySnapshots = data.board_snapshots || [];
+    if (replaySnapshots.length === 0) { titleEl.textContent = 'No moves recorded'; return; }
+    const date = new Date(data.started_at).toLocaleDateString();
+    titleEl.textContent = (data.mode === 'ai' ? '🤖 vs Computer' : data.mode === 'local' ? '👥 Pass & Play' : '🌐 Online') + ' · ' + date + (data.result ? ' · ' + data.result : '');
+    replayStep = 0;
+    renderReplayBoard(replaySnapshots[0]);
+    updateReplayStep();
+    stopReplay();
+  } catch(e) { document.getElementById('replay-title').textContent = 'Error: ' + e.message; }
+}
+
+function renderReplayBoard(snapshot) {
+  const el = document.getElementById('replay-board');
+  if (!el || !snapshot) return;
+  el.innerHTML = '';
+  let rb = 0, rr = 0;
+  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell ' + ((r+c)%2===0?'light':'dark');
+    if (snapshot[r][c]) {
+      const p = document.createElement('div');
+      p.className = 'piece ' + snapshot[r][c].color + (snapshot[r][c].king?' king':'');
+      cell.appendChild(p);
+      if (snapshot[r][c].color === 'black') rb++;
+      else rr++;
+    }
+    el.appendChild(cell);
+  }
+  document.getElementById('r-black-count').textContent = rb;
+  document.getElementById('r-red-count').textContent = rr;
+}
+
+function updateReplayStep() {
+  document.getElementById('replay-step').textContent = 'Move ' + replayStep + ' / ' + (replaySnapshots.length - 1);
+}
+
+function replayFirst() { stopReplay(); replayStep = 0; renderReplayBoard(replaySnapshots[0]); updateReplayStep(); }
+function replayLast() { stopReplay(); replayStep = replaySnapshots.length-1; renderReplayBoard(replaySnapshots[replayStep]); updateReplayStep(); }
+function replayNext() { if (replayStep < replaySnapshots.length-1) { replayStep++; renderReplayBoard(replaySnapshots[replayStep]); updateReplayStep(); } }
+function replayPrev() { if (replayStep > 0) { replayStep--; renderReplayBoard(replaySnapshots[replayStep]); updateReplayStep(); } }
+function updateReplaySpeed() { replaySpeed = parseInt(document.getElementById('replay-speed').value); if (replayInterval) { stopReplay(); startReplay(); } }
+function stopReplay() { if (replayInterval) { clearInterval(replayInterval); replayInterval = null; } const btn = document.getElementById('replay-play-btn'); if(btn) { btn.textContent = '▶ Play'; btn.classList.remove('active'); } }
+function startReplay() { const btn = document.getElementById('replay-play-btn'); if(btn) { btn.textContent = '⏸ Pause'; btn.classList.add('active'); } replayInterval = setInterval(() => { if (replayStep >= replaySnapshots.length-1) { stopReplay(); } else { replayNext(); } }, replaySpeed); }
+function toggleReplayPlay() { if (replayInterval) { stopReplay(); } else { if (replayStep >= replaySnapshots.length-1) replayStep = 0; startReplay(); } }
+
 // ===================== BOARD LOGIC =====================
 const boardEl = document.getElementById('board');
 const statusEl = document.getElementById('status');
 let board=[], selected=null, currentPlayer='black', validMoves=[], chainPiece=null;
-let gameMode=''; // 'ai','local','online-host','online-guest'
-let myColor=''; // for online
-let peer=null, conn=null;
-let gameOver=false;
+let gameMode='', myColor='', peer=null, conn=null, gameOver=false;
 
 function initBoard(){
   board=Array.from({length:8},()=>Array(8).fill(null));
@@ -139,18 +462,15 @@ function getJumps(r,c,piece,b){
   }
   return jumps;
 }
-
 function getMoves(r,c,piece,b){
   const dirs=piece.king?[-1,1]:piece.color==='red'?[-1]:[1];
   const moves=[];
   for(const dr of dirs) for(const dc of[-1,1]){
     const nr=r+dr,nc=c+dc;
-    if(nr>=0&&nr<8&&nc>=0&&nc<8&&!b[nr][nc])
-      moves.push({r:nr,c:nc,jumpR:null,jumpC:null,isJump:false});
+    if(nr>=0&&nr<8&&nc>=0&&nc<8&&!b[nr][nc]) moves.push({r:nr,c:nc,jumpR:null,jumpC:null,isJump:false});
   }
   return moves;
 }
-
 function getAllMoves(player,b){
   const all=[];
   for(let r=0;r<8;r++) for(let c=0;c<8;c++)
@@ -158,7 +478,6 @@ function getAllMoves(player,b){
       all.push(...getMoves(r,c,b[r][c],b),...getJumps(r,c,b[r][c],b).map(j=>({...j,fromR:r,fromC:c})));
   return all;
 }
-
 function renderBoard(){
   boardEl.innerHTML='';
   for(let r=0;r<8;r++) for(let c=0;c<8;c++){
@@ -180,12 +499,9 @@ function renderBoard(){
   document.getElementById('sb-black').classList.toggle('active-turn',currentPlayer==='black'&&!gameOver);
   document.getElementById('sb-red').classList.toggle('active-turn',currentPlayer==='red'&&!gameOver);
 }
-
 function handleClick(r,c){
   if(gameOver) return;
-  // Online: only act on your turn
   if((gameMode==='online-host'||gameMode==='online-guest')&&currentPlayer!==myColor) return;
-
   if(chainPiece){
     if(r===chainPiece.r&&c===chainPiece.c) return;
     const move=validMoves.find(m=>m.r===r&&m.c===c);
@@ -204,7 +520,6 @@ function handleClick(r,c){
   }
   selected=null;validMoves=[];renderBoard();
 }
-
 function executeMove(move,sendToRemote){
   const fromR=selected.r,fromC=selected.c;
   const p=board[fromR][fromC];
@@ -212,12 +527,9 @@ function executeMove(move,sendToRemote){
   board[fromR][fromC]=null;
   if(move.jumpR!==null) board[move.jumpR][move.jumpC]=null;
   if((p.color==='red'&&move.r===0)||(p.color==='black'&&move.r===7)) p.king=true;
-
-  // Send to remote peer
-  if(sendToRemote&&(gameMode==='online-host'||gameMode==='online-guest')&&conn&&conn.open){
+  if(sendToRemote&&(gameMode==='online-host'||gameMode==='online-guest')&&conn&&conn.open)
     conn.send({type:'move',fromR,fromC,move,board:JSON.parse(JSON.stringify(board))});
-  }
-
+  recordMove(fromR,fromC,move,board);
   const moreJumps=move.isJump?getJumps(move.r,move.c,p,board):[];
   if(moreJumps.length){
     chainPiece={r:move.r,c:move.c};selected={r:move.r,c:move.c};
@@ -232,93 +544,70 @@ function executeMove(move,sendToRemote){
   if(redLeft===0){endGame('Black wins! 🎉');return;}
   if(blackLeft===0){endGame('Red wins! 🎉');return;}
   if(!getAllMoves(currentPlayer,board).length){endGame((currentPlayer==='red'?'Black':'Red')+' wins! (no moves)');return;}
-  statusEl.textContent=(currentPlayer==='red'?'Red':'Black')+"'s turn"+(isOnlineMode()?getOnlineTurnHint():'');
+  statusEl.textContent=(currentPlayer==='red'?'Red':'Black')+"'s turn"+(isOnlineMode()?getOnlineTurnHint():'')+(gameMode==='ai'&&currentPlayer==='black'?' (Your turn)':'');
   renderBoard();
-
   if(gameMode==='ai'&&currentPlayer==='red') setTimeout(doAiMove,400);
 }
-
 function endGame(msg){
-  gameOver=true;
-  statusEl.textContent=msg;
-  renderBoard();
+  gameOver=true;statusEl.textContent=msg;renderBoard();
+  endSession(msg);
 }
-
 function isOnlineMode(){return gameMode==='online-host'||gameMode==='online-guest';}
-function getOnlineTurnHint(){
-  if(currentPlayer===myColor) return ' (Your turn)';
-  return ' (Opponent\'s turn)';
-}
+function getOnlineTurnHint(){return currentPlayer===myColor?' (Your turn)':' (Opponent\'s turn)';}
 
-// ===================== AI (MINIMAX depth 3) =====================
+// ===================== AI =====================
 function boardCopy(b){return b.map(row=>row.map(c=>c?{...c}:null));}
-
-function scoreBoard(b,forColor){
+function scoreBoard(b,fc){
   let s=0;
-  const opp=forColor==='red'?'black':'red';
   for(let r=0;r<8;r++) for(let c=0;c<8;c++){
-    const p=b[r][c];
-    if(!p) continue;
+    const p=b[r][c]; if(!p) continue;
     const v=p.king?3:1;
-    if(p.color===forColor) s+=v; else s-=v;
+    if(p.color===fc) s+=v; else s-=v;
   }
   return s;
 }
-
 function allMovesWithFrom(player,b){
   const res=[];
   for(let r=0;r<8;r++) for(let c=0;c<8;c++)
     if(b[r][c]&&b[r][c].color===player){
-      const moves=[...getMoves(r,c,b[r][c],b),...getJumps(r,c,b[r][c],b)];
-      moves.forEach(m=>res.push({fromR:r,fromC:c,move:m}));
+      [...getMoves(r,c,b[r][c],b),...getJumps(r,c,b[r][c],b)].forEach(m=>res.push({fromR:r,fromC:c,move:m}));
     }
   return res;
 }
-
 function applyMove(b,fromR,fromC,move){
-  const nb=boardCopy(b);
-  const p=nb[fromR][fromC];
-  nb[move.r][move.c]=p;
-  nb[fromR][fromC]=null;
+  const nb=boardCopy(b),p=nb[fromR][fromC];
+  nb[move.r][move.c]=p;nb[fromR][fromC]=null;
   if(move.jumpR!==null) nb[move.jumpR][move.jumpC]=null;
   if((p.color==='red'&&move.r===0)||(p.color==='black'&&move.r===7)) nb[move.r][move.c].king=true;
   return nb;
 }
-
 function minimax(b,depth,isMax,aiColor,alpha,beta){
   const opp=aiColor==='red'?'black':'red';
-  const curPlayer=isMax?aiColor:opp;
-  const moves=allMovesWithFrom(curPlayer,b);
+  const cp=isMax?aiColor:opp;
+  const moves=allMovesWithFrom(cp,b);
   if(depth===0||moves.length===0) return scoreBoard(b,aiColor);
   if(isMax){
     let best=-Infinity;
     for(const {fromR,fromC,move} of moves){
-      const nb=applyMove(b,fromR,fromC,move);
-      best=Math.max(best,minimax(nb,depth-1,false,aiColor,alpha,beta));
-      alpha=Math.max(alpha,best);
-      if(beta<=alpha) break;
+      best=Math.max(best,minimax(applyMove(b,fromR,fromC,move),depth-1,false,aiColor,alpha,beta));
+      alpha=Math.max(alpha,best);if(beta<=alpha) break;
     }
     return best;
   } else {
     let best=Infinity;
     for(const {fromR,fromC,move} of moves){
-      const nb=applyMove(b,fromR,fromC,move);
-      best=Math.min(best,minimax(nb,depth-1,true,aiColor,alpha,beta));
-      beta=Math.min(beta,best);
-      if(beta<=alpha) break;
+      best=Math.min(best,minimax(applyMove(b,fromR,fromC,move),depth-1,true,aiColor,alpha,beta));
+      beta=Math.min(beta,best);if(beta<=alpha) break;
     }
     return best;
   }
 }
-
 function doAiMove(){
   if(gameOver||currentPlayer!=='red') return;
-  const moves=allMovesWithFrom('red',board);
-  if(!moves.length) return;
+  const moves=allMovesWithFrom('red',board);if(!moves.length) return;
   let best=-Infinity,bestMove=null;
   for(const {fromR,fromC,move} of moves){
-    const nb=applyMove(board,fromR,fromC,move);
-    const s=minimax(nb,3,false,'red',-Infinity,Infinity);
+    const s=minimax(applyMove(board,fromR,fromC,move),3,false,'red',-Infinity,Infinity);
     if(s>best){best=s;bestMove={fromR,fromC,move};}
   }
   selected={r:bestMove.fromR,c:bestMove.fromC};
@@ -327,28 +616,32 @@ function doAiMove(){
 
 // ===================== MODE MANAGEMENT =====================
 function backToMenu(){
-  if(peer){try{peer.destroy();}catch(e){} peer=null;}
-  conn=null;
+  if(peer){try{peer.destroy();}catch(e){} peer=null;} conn=null;
+  stopReplay();
   document.getElementById('menu').style.display='flex';
   document.getElementById('lobby').style.display='none';
   document.getElementById('game-area').style.display='none';
+  document.getElementById('history-area').style.display='none';
+  document.getElementById('replay-area').style.display='none';
   document.getElementById('online-share').style.display='none';
 }
 
-function startMode(mode){
-  gameMode=mode;
-  gameOver=false;
-  initBoard();
-  selected=null;validMoves=[];currentPlayer='black';chainPiece=null;
+async function startMode(mode){
+  gameMode=mode;gameOver=false;
+  initBoard();selected=null;validMoves=[];currentPlayer='black';chainPiece=null;
   document.getElementById('menu').style.display='none';
   document.getElementById('lobby').style.display='none';
   document.getElementById('game-area').style.display='flex';
+  document.getElementById('history-area').style.display='none';
+  document.getElementById('replay-area').style.display='none';
   const lbl=document.getElementById('mode-label');
   if(mode==='ai') lbl.textContent='🤖 vs Computer';
   else if(mode==='local') lbl.textContent='👥 Pass & Play';
-  statusEl.textContent="Black's turn"+(mode==='ai'?' (You are Black)':'');
+  statusEl.textContent="Black's turn"+(mode==='ai'?' (Your turn)':'');
   document.getElementById('online-share').style.display='none';
   renderBoard();
+  await startNewSession(mode);
+  if(mode==='ai'&&currentPlayer==='red') setTimeout(doAiMove,400);
 }
 
 // ===================== ONLINE (PeerJS) =====================
@@ -359,7 +652,6 @@ function showLobby(){
   document.getElementById('room-link-box').style.display='none';
   document.getElementById('join-code').value='';
 }
-
 function createRoom(){
   document.getElementById('conn-status').textContent='Creating room...';
   if(peer){try{peer.destroy();}catch(e){}}
@@ -367,82 +659,49 @@ function createRoom(){
   peer.on('open',function(id){
     const shareUrl=window.location.href.split('?')[0]+'?room='+id;
     document.getElementById('room-link-box').style.display='block';
-    document.getElementById('room-link-box').innerHTML='Room code: <b>'+id+'</b><br><span style="color:#aaa">Share this link:</span><br><a href="'+shareUrl+'" style="color:#7fc97f;word-break:break-all">'+shareUrl+'</a><br><button onclick="copyRoomLink(\'' +shareUrl+ '\')" style="margin-top:6px;padding:4px 12px;border-radius:6px;border:none;background:#444;color:#fff;cursor:pointer">Copy Link</button>';
-    document.getElementById('conn-status').textContent='Waiting for opponent to join...';
+    document.getElementById('room-link-box').innerHTML='Room code: <b>'+id+'</b><br><span style="color:#aaa">Share this link:</span><br><a href="'+shareUrl+'" style="color:#7fc97f;word-break:break-all">'+shareUrl+'</a><br><button onclick="copyRoomLink(\''+shareUrl+'\')">Copy Link</button>';
+    document.getElementById('conn-status').textContent='Waiting for opponent...';
   });
-  peer.on('connection',function(c){
-    conn=c;
-    setupConn('host');
-  });
+  peer.on('connection',function(c){conn=c;setupConn('host');});
   peer.on('error',function(e){document.getElementById('conn-status').textContent='Error: '+e.message;});
 }
-
 function copyRoomLink(url){
-  navigator.clipboard.writeText(url).then(()=>{
-    document.getElementById('conn-status').textContent='Link copied!';
-  });
+  navigator.clipboard.writeText(url).then(()=>{document.getElementById('conn-status').textContent='Link copied!';});
 }
-
 function joinRoom(){
   const code=document.getElementById('join-code').value.trim();
   if(!code){alert('Please enter a room code');return;}
   document.getElementById('conn-status').textContent='Connecting...';
   if(peer){try{peer.destroy();}catch(e){}}
   peer=new Peer();
-  peer.on('open',function(){
-    conn=peer.connect(code);
-    setupConn('guest');
-  });
+  peer.on('open',function(){conn=peer.connect(code);setupConn('guest');});
   peer.on('error',function(e){document.getElementById('conn-status').textContent='Error: '+e.message;});
 }
-
 function setupConn(role){
   gameMode=role==='host'?'online-host':'online-guest';
   myColor=role==='host'?'black':'red';
-
   conn.on('open',function(){
     document.getElementById('conn-status').textContent='Connected!';
-    if(role==='host'){
-      // host starts the game
-      setTimeout(()=>{
-        startOnlineGame();
-        conn.send({type:'start',board:JSON.parse(JSON.stringify(board))});
-      },500);
-    }
+    if(role==='host'){setTimeout(()=>{startOnlineGame();conn.send({type:'start',board:JSON.parse(JSON.stringify(board))});},500);}
   });
-
   conn.on('data',function(data){
-    if(data.type==='start'){
-      board=data.board;
-      startOnlineGame();
-    } else if(data.type==='move'){
-      board=data.board;
-      selected=null;validMoves=[];chainPiece=null;
+    if(data.type==='start'){board=data.board;startOnlineGame();}
+    else if(data.type==='move'){
+      board=data.board;selected=null;validMoves=[];chainPiece=null;
       currentPlayer=currentPlayer==='red'?'black':'red';
-      const redLeft=board.flat().filter(p=>p&&p.color==='red').length;
-      const blackLeft=board.flat().filter(p=>p&&p.color==='black').length;
-      if(redLeft===0){endGame('Black wins! 🎉');}
-      else if(blackLeft===0){endGame('Red wins! 🎉');}
-      else if(!getAllMoves(currentPlayer,board).length){endGame((currentPlayer==='red'?'Black':'Red')+' wins! (no moves)');}
-      else{statusEl.textContent=(currentPlayer==='red'?'Red':'Black')+"'s turn"+getOnlineTurnHint();}
+      const rL=board.flat().filter(p=>p&&p.color==='red').length;
+      const bL=board.flat().filter(p=>p&&p.color==='black').length;
+      if(rL===0) endGame('Black wins! 🎉');
+      else if(bL===0) endGame('Red wins! 🎉');
+      else if(!getAllMoves(currentPlayer,board).length) endGame((currentPlayer==='red'?'Black':'Red')+' wins! (no moves)');
+      else {statusEl.textContent=(currentPlayer==='red'?'Red':'Black')+"'s turn"+getOnlineTurnHint();}
       renderBoard();
-    } else if(data.type==='reset'){
-      board=data.board;
-      currentPlayer='black';selected=null;validMoves=[];chainPiece=null;gameOver=false;
-      statusEl.textContent="Black's turn"+getOnlineTurnHint();
-      renderBoard();
-    }
+    } else if(data.type==='reset'){board=data.board;currentPlayer='black';selected=null;validMoves=[];chainPiece=null;gameOver=false;statusEl.textContent="Black's turn"+getOnlineTurnHint();renderBoard();}
   });
-
-  conn.on('close',function(){
-    statusEl.textContent='Opponent disconnected.';
-  });
+  conn.on('close',function(){statusEl.textContent='Opponent disconnected.';});
 }
-
-function startOnlineGame(){
-  gameOver=false;
-  initBoard();
-  currentPlayer='black';selected=null;validMoves=[];chainPiece=null;
+async function startOnlineGame(){
+  gameOver=false;initBoard();currentPlayer='black';selected=null;validMoves=[];chainPiece=null;
   document.getElementById('menu').style.display='none';
   document.getElementById('lobby').style.display='none';
   document.getElementById('game-area').style.display='flex';
@@ -450,36 +709,28 @@ function startOnlineGame(){
   const shareEl=document.getElementById('online-share');
   if(gameMode==='online-host'&&peer&&peer.id){
     const url=window.location.href.split('?')[0]+'?room='+peer.id;
-    shareEl.innerHTML='Share this link with your friend: <br><a href="'+url+'" style="color:#7fc97f">'+url+'</a>';
+    shareEl.innerHTML='Share: <a href="'+url+'" style="color:#7fc97f">'+url+'</a>';
     shareEl.style.display='block';
-  } else {
-    shareEl.style.display='none';
   }
   statusEl.textContent="Black's turn"+getOnlineTurnHint();
   renderBoard();
+  await startNewSession(gameMode);
 }
-
-function resetGame(){
-  gameOver=false;
-  initBoard();
-  selected=null;validMoves=[];currentPlayer='black';chainPiece=null;
-  statusEl.textContent="Black's turn"+(gameMode==='ai'?' (You are Black)':isOnlineMode()?getOnlineTurnHint():'');
-  if(isOnlineMode()&&conn&&conn.open){
-    conn.send({type:'reset',board:JSON.parse(JSON.stringify(board))});
-  }
+async function resetGame(){
+  gameOver=false;initBoard();selected=null;validMoves=[];currentPlayer='black';chainPiece=null;
+  statusEl.textContent="Black's turn"+(gameMode==='ai'?' (Your turn)':isOnlineMode()?getOnlineTurnHint():'');
+  if(isOnlineMode()&&conn&&conn.open) conn.send({type:'reset',board:JSON.parse(JSON.stringify(board))});
   renderBoard();
+  await startNewSession(gameMode);
   if(gameMode==='ai'&&currentPlayer==='red') setTimeout(doAiMove,400);
 }
 
-// ===================== AUTO-JOIN FROM URL =====================
+// ===================== AUTO-JOIN + INIT =====================
 (function(){
+  initSupabase();
   const params=new URLSearchParams(window.location.search);
   const room=params.get('room');
-  if(room){
-    showLobby();
-    document.getElementById('join-code').value=room;
-    document.getElementById('conn-status').textContent='Room code detected — click Join Room!';
-  }
+  if(room){showLobby();document.getElementById('join-code').value=room;document.getElementById('conn-status').textContent='Room code detected — click Join Room!';}
 })();
 </script>
 </body>
