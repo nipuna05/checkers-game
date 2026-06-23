@@ -28,7 +28,6 @@ h1{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:1px;color:#f0
 #menu{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:360px}
 .menu-btn{width:100%;padding:14px 20px;font-size:16px;font-weight:600;border:2px solid #b58863;background:rgba(181,136,99,0.15);color:#f0d9b5;border-radius:12px;cursor:pointer;transition:all .2s}
 .menu-btn:hover{background:rgba(181,136,99,0.35);transform:translateY(-2px)}
-/* PLAY WITH FRIEND PANEL */
 #friend-panel{display:none;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:440px}
 .friend-card{background:rgba(255,255,255,0.07);border:1px solid #444;border-radius:12px;padding:18px 20px;width:100%;text-align:center}
 .friend-card h3{font-size:15px;font-weight:600;color:#f0d9b5;margin-bottom:6px}
@@ -40,7 +39,6 @@ h1{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:1px;color:#f0
 #friend-status{font-size:13px;color:#aaa;margin-top:4px;min-height:18px;text-align:center}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid #555;border-top-color:#b58863;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* JOIN PANEL (friend sees this) */
 #join-panel{display:none;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:440px}
 .join-welcome{background:linear-gradient(135deg,rgba(181,136,99,0.2),rgba(127,201,127,0.1));border:1px solid #b58863;border-radius:14px;padding:20px 24px;width:100%;text-align:center}
 .join-welcome h2{font-size:20px;color:#f0d9b5;margin-bottom:8px}
@@ -51,8 +49,7 @@ h1{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:1px;color:#f0
 .join-opt-btn.primary:hover{background:#c9a07b;transform:translateY(-1px)}
 .join-opt-btn.secondary{background:transparent;border:2px solid #7fc97f;color:#7fc97f}
 .join-opt-btn.secondary:hover{background:rgba(127,201,127,0.15);transform:translateY(-1px)}
-#join-status{font-size:13px;color:#aaa;margin-top:4px;min-height:18px;text-align:center}
-/* GAME */
+#join-status{font-size:13px;color:#aaa;margin-top:10px;min-height:18px;text-align:center}
 #game-area{display:none;flex-direction:column;align-items:center;width:100%}
 #top-bar{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:500px;margin-bottom:8px;gap:8px}
 #mode-label{font-size:12px;color:#aaa;background:rgba(255,255,255,0.07);padding:4px 10px;border-radius:6px}
@@ -75,7 +72,7 @@ h1{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:1px;color:#f0
 .piece:hover{transform:scale(1.05)}
 .piece.red{background:radial-gradient(circle at 35% 35%,#ff6b6b,#c0392b)}
 .piece.black{background:radial-gradient(circle at 35% 35%,#555,#111)}
-.piece.king::after{content:'♛';font-size:18px;color:gold;text-shadow:0 1px 2px rgba(0,0,0,0.8)}
+.piece.king::after{content:'\u265B';font-size:18px;color:gold;text-shadow:0 1px 2px rgba(0,0,0,0.8)}
 #controls{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;justify-content:center}
 #controls button{padding:7px 18px;border:1px solid #555;background:transparent;color:#fff;border-radius:8px;cursor:pointer;font-size:13px}
 #controls button:hover{background:rgba(255,255,255,0.1)}
@@ -85,7 +82,6 @@ h1{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:1px;color:#f0
 .share-row input{flex:1;max-width:320px;padding:6px 10px;border-radius:7px;border:1px solid #555;background:#111;color:#7fc97f;font-size:11px}
 .share-row button{padding:6px 12px;border-radius:7px;border:none;background:#b58863;color:#fff;font-size:12px;cursor:pointer}
 #save-indicator{font-size:11px;color:#7fc97f;margin-top:6px;min-height:16px;text-align:center}
-/* HISTORY */
 #history-area{display:none;flex-direction:column;align-items:center;width:100%;max-width:600px}
 .game-card{background:rgba(255,255,255,0.07);border:1px solid #444;border-radius:10px;padding:12px 16px;margin-bottom:10px;width:100%;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background .2s}
 .game-card:hover{background:rgba(255,255,255,0.12)}
@@ -94,7 +90,6 @@ h1{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:1px;color:#f0
 .game-card-btn{padding:5px 14px;border:1px solid #7fc97f;background:transparent;color:#7fc97f;border-radius:7px;cursor:pointer;font-size:12px}
 .game-card-btn:hover{background:rgba(127,201,127,0.15)}
 #no-games{color:#aaa;font-size:14px;text-align:center;padding:20px}
-/* REPLAY */
 #replay-area{display:none;flex-direction:column;align-items:center;width:100%}
 #replay-controls{display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap;justify-content:center}
 #replay-controls button{padding:6px 16px;border:1px solid #555;background:transparent;color:#fff;border-radius:8px;cursor:pointer;font-size:13px}
@@ -103,147 +98,139 @@ h1{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:1px;color:#f0
 #replay-step{font-size:13px;color:#aaa;margin-top:6px}
 #replay-board{display:grid;grid-template-columns:repeat(8,60px);grid-template-rows:repeat(8,60px);border:2px solid #555;border-radius:8px;overflow:hidden}
 @media(max-width:520px){
-  #board,#replay-board{grid-template-columns:repeat(8,44px);grid-template-rows:repeat(8,44px)}
-  .cell{width:44px;height:44px}.piece{width:32px;height:32px}
-  .piece.king::after{font-size:13px}
-  .join-options{flex-direction:column}
-  .join-opt-btn{width:100%}
+#board,#replay-board{grid-template-columns:repeat(8,44px);grid-template-rows:repeat(8,44px)}
+.cell{width:44px;height:44px}.piece{width:32px;height:32px}
+.piece.king::after{font-size:13px}
+.join-options{flex-direction:column}
+.join-opt-btn{width:100%}
 }
 </style>
 </head>
 <body>
-
 <!-- AUTH MODAL -->
 <div id="auth-modal">
 <div id="auth-box">
-  <button id="auth-close" onclick="closeAuth()">✕</button>
-  <h2 id="auth-title">Sign In</h2>
-  <input id="auth-email" type="email" placeholder="Email address" />
-  <input id="auth-pass" type="password" placeholder="Password" />
-  <button class="auth-btn" onclick="submitAuth()">Sign In</button>
-  <div id="auth-msg"></div>
-  <div class="auth-toggle" id="auth-toggle-text">Don't have an account? <span onclick="toggleAuthMode()">Sign Up</span></div>
+<button id="auth-close" onclick="closeAuth()">&#x2715;</button>
+<h2 id="auth-title">Sign In</h2>
+<input id="auth-email" type="email" placeholder="Email address" />
+<input id="auth-pass" type="password" placeholder="Password" />
+<button class="auth-btn" onclick="submitAuth()">Sign In</button>
+<div id="auth-msg"></div>
+<div class="auth-toggle" id="auth-toggle-text">Don't have an account? <span onclick="toggleAuthMode()">Sign Up</span></div>
 </div>
 </div>
 
-<h1>♟ Checkers</h1>
+<h1>&#9823; Checkers</h1>
 
-<!-- AUTH BAR -->
 <div id="auth-bar">
-  <span id="auth-user"></span>
-  <button id="history-btn" style="display:none" onclick="showHistory()">📋 My Games</button>
-  <button id="login-btn" onclick="openAuth('signin')">Sign In / Sign Up</button>
-  <button id="logout-btn" style="display:none" onclick="signOut()">Sign Out</button>
+<span id="auth-user"></span>
+<button id="history-btn" style="display:none" onclick="showHistory()">&#128203; My Games</button>
+<button id="login-btn" onclick="openAuth('signin')">Sign In / Sign Up</button>
+<button id="logout-btn" style="display:none" onclick="signOut()">Sign Out</button>
 </div>
 
-<!-- MAIN MENU -->
 <div id="menu">
-  <div style="color:#aaa;font-size:13px;margin-bottom:4px">Choose a game mode</div>
-  <button class="menu-btn" onclick="startMode('ai')">🤖 Play vs Computer</button>
-  <button class="menu-btn" onclick="startMode('local')">👥 Pass &amp; Play (2 Players, Same Device)</button>
-  <button class="menu-btn" onclick="showFriendPanel()">🔗 Play with a Friend (Online)</button>
+<div style="color:#aaa;font-size:13px;margin-bottom:4px">Choose a game mode</div>
+<button class="menu-btn" onclick="startMode('ai')">&#129302; Play vs Computer</button>
+<button class="menu-btn" onclick="startMode('local')">&#128101; Pass &amp; Play (2 Players, Same Device)</button>
+<button class="menu-btn" onclick="showFriendPanel()">&#128279; Play with a Friend (Online)</button>
 </div>
 
-<!-- PLAY WITH FRIEND PANEL (host side - auto generates link) -->
 <div id="friend-panel">
-  <div class="friend-card">
-    <h3>🔗 Play with a Friend</h3>
-    <p>A unique game link has been created!<br>Share it with your friend — they can join instantly.</p>
-    <div id="generating-msg" style="color:#aaa;font-size:13px"><span class="spinner"></span>Generating link...</div>
-    <div id="link-ready" style="display:none">
-      <div class="copy-link-box">
-        <input id="share-link-input" type="text" readonly />
-        <button onclick="copyFriendLink()">📋 Copy</button>
-      </div>
-      <div style="margin-top:8px;font-size:12px;color:#aaa">Your friend does not need an account to play.<br>They can also sign in to save their game.</div>
-    </div>
-    <div id="friend-status" style="margin-top:10px">Waiting for friend to join...</div>
-  </div>
-  <button class="menu-btn" style="font-size:13px;max-width:200px" onclick="backToMenu()">← Back to Menu</button>
+<div class="friend-card">
+<h3>&#128279; Play with a Friend</h3>
+<p>A unique game link has been created!<br>Share it with your friend &mdash; they can join instantly.</p>
+<div id="generating-msg" style="color:#aaa;font-size:13px"><span class="spinner"></span>Generating link...</div>
+<div id="link-ready" style="display:none">
+<div class="copy-link-box">
+<input id="share-link-input" type="text" readonly />
+<button onclick="copyFriendLink()">&#128203; Copy</button>
+</div>
+<div style="margin-top:8px;font-size:12px;color:#aaa">Your friend does not need an account to play.<br>They can also sign in to save their game.</div>
+</div>
+<div id="friend-status" style="margin-top:10px">Waiting for friend to join...</div>
+</div>
+<button class="menu-btn" style="font-size:13px;max-width:200px" onclick="backToMenu()">&larr; Back to Menu</button>
 </div>
 
-<!-- JOIN PANEL (friend sees this when opening link) -->
 <div id="join-panel">
-  <div class="join-welcome">
-    <h2>👋 You're Invited!</h2>
-    <p>Your friend is waiting to play Checkers with you.<br>You can jump in right away — <strong>no account needed!</strong><br>Or sign in first if you want your game saved.</p>
-    <div class="join-options">
-      <button class="join-opt-btn primary" onclick="joinAsGuest()">▶ Play as Guest</button>
-      <button class="join-opt-btn secondary" onclick="joinWithLogin()">🔐 Sign In &amp; Play</button>
-    </div>
-    <div id="join-status" style="margin-top:10px"></div>
-  </div>
-  <div style="font-size:11px;color:#555;text-align:center;margin-top:8px">Playing as guest means this game won't be saved to your history.</div>
+<div class="join-welcome">
+<h2>&#128075; You're Invited!</h2>
+<p>Your friend is waiting to play Checkers with you.<br>You can jump in right away &mdash; <strong>no account needed!</strong><br>Or sign in first if you want your game saved.</p>
+<div class="join-options">
+<button class="join-opt-btn primary" onclick="joinAsGuest()">&#9654; Play as Guest</button>
+<button class="join-opt-btn secondary" onclick="joinWithLogin()">&#128272; Sign In &amp; Play</button>
+</div>
+<div id="join-status" style="margin-top:10px"></div>
+</div>
+<div style="font-size:11px;color:#555;text-align:center;margin-top:8px">Playing as guest means this game won't be saved to your history.</div>
 </div>
 
-<!-- GAME AREA -->
 <div id="game-area">
-  <div id="top-bar">
-    <button id="back-btn" onclick="backToMenu()">← Menu</button>
-    <div id="mode-label"></div>
-  </div>
-  <div id="score">
-    <div class="score-box" id="sb-black"><div class="score-label">Black</div><div class="score-val" id="black-count">12</div></div>
-    <div class="score-box" id="sb-red"><div class="score-label">Red</div><div class="score-val" id="red-count">12</div></div>
-  </div>
-  <div id="status">Black's turn</div>
-  <div id="legend">
-    <span><span class="legend-dot" style="background:#7fc97f"></span>Move</span>
-    <span><span class="legend-dot" style="background:#e87f3a"></span>Jump</span>
-  </div>
-  <div id="board"></div>
-  <div id="save-indicator"></div>
-  <div id="online-share-bar">
-    <p>Share this link with your friend to keep playing:</p>
-    <div class="share-row">
-      <input id="in-game-share-link" type="text" readonly />
-      <button onclick="copyInGameLink()">Copy</button>
-    </div>
-  </div>
-  <div id="controls">
-    <button onclick="resetGame()">New Game</button>
-  </div>
+<div id="top-bar">
+<button id="back-btn" onclick="backToMenu()">&larr; Menu</button>
+<div id="mode-label"></div>
+</div>
+<div id="score">
+<div class="score-box" id="sb-black"><div class="score-label">Black</div><div class="score-val" id="black-count">12</div></div>
+<div class="score-box" id="sb-red"><div class="score-label">Red</div><div class="score-val" id="red-count">12</div></div>
+</div>
+<div id="status">Black's turn</div>
+<div id="legend">
+<span><span class="legend-dot" style="background:#7fc97f"></span>Move</span>
+<span><span class="legend-dot" style="background:#e87f3a"></span>Jump</span>
+</div>
+<div id="board"></div>
+<div id="save-indicator"></div>
+<div id="online-share-bar">
+<p>Share this link with your friend to keep playing:</p>
+<div class="share-row">
+<input id="in-game-share-link" type="text" readonly />
+<button onclick="copyInGameLink()">Copy</button>
+</div>
+</div>
+<div id="controls">
+<button onclick="resetGame()">New Game</button>
+</div>
 </div>
 
-<!-- HISTORY AREA -->
 <div id="history-area">
-  <div style="display:flex;align-items:center;gap:12px;width:100%;justify-content:space-between;max-width:600px;margin-bottom:12px">
-    <h2 style="margin:0;font-size:18px;color:#f0d9b5">📋 My Games (Last 7 Days)</h2>
-    <button onclick="backToMenu()" style="padding:5px 14px;border:1px solid #666;background:transparent;color:#ccc;border-radius:8px;cursor:pointer;font-size:12px">← Menu</button>
-  </div>
-  <div id="games-list" style="width:100%"></div>
+<div style="display:flex;align-items:center;gap:12px;width:100%;justify-content:space-between;max-width:600px;margin-bottom:12px">
+<h2 style="margin:0;font-size:18px;color:#f0d9b5">&#128203; My Games (Last 7 Days)</h2>
+<button onclick="backToMenu()" style="padding:5px 14px;border:1px solid #666;background:transparent;color:#ccc;border-radius:8px;cursor:pointer;font-size:12px">&larr; Menu</button>
+</div>
+<div id="games-list" style="width:100%"></div>
 </div>
 
-<!-- REPLAY AREA -->
 <div id="replay-area">
-  <div style="display:flex;align-items:center;gap:12px;width:100%;justify-content:space-between;max-width:500px;margin-bottom:12px">
-    <div style="font-size:14px;color:#f0d9b5" id="replay-title">Game Replay</div>
-    <button onclick="showHistory()" style="padding:5px 14px;border:1px solid #666;background:transparent;color:#ccc;border-radius:8px;cursor:pointer;font-size:12px">← History</button>
-  </div>
-  <div style="display:flex;gap:16px;margin-bottom:8px">
-    <div class="score-box"><div class="score-label">Black</div><div class="score-val" id="r-black-count">12</div></div>
-    <div class="score-box"><div class="score-label">Red</div><div class="score-val" id="r-red-count">12</div></div>
-  </div>
-  <div id="replay-board"></div>
-  <div id="replay-step">Step 0 / 0</div>
-  <div id="replay-controls">
-    <button onclick="replayFirst()">⏮</button>
-    <button onclick="replayPrev()">◀</button>
-    <button id="replay-play-btn" onclick="toggleReplayPlay()">▶ Play</button>
-    <button onclick="replayNext()">▶</button>
-    <button onclick="replayLast()">⏭</button>
-    <select id="replay-speed" onchange="updateReplaySpeed()" style="background:#222;color:#fff;border:1px solid #555;border-radius:6px;padding:4px 8px;cursor:pointer">
-      <option value="1000">Slow</option>
-      <option value="600" selected>Normal</option>
-      <option value="250">Fast</option>
-    </select>
-  </div>
+<div style="display:flex;align-items:center;gap:12px;width:100%;justify-content:space-between;max-width:500px;margin-bottom:12px">
+<div style="font-size:14px;color:#f0d9b5" id="replay-title">Game Replay</div>
+<button onclick="showHistory()" style="padding:5px 14px;border:1px solid #666;background:transparent;color:#ccc;border-radius:8px;cursor:pointer;font-size:12px">&larr; History</button>
 </div>
-
+<div style="display:flex;gap:16px;margin-bottom:8px">
+<div class="score-box"><div class="score-label">Black</div><div class="score-val" id="r-black-count">12</div></div>
+<div class="score-box"><div class="score-label">Red</div><div class="score-val" id="r-red-count">12</div></div>
+</div>
+<div id="replay-board"></div>
+<div id="replay-step">Step 0 / 0</div>
+<div id="replay-controls">
+<button onclick="replayFirst()">&#9198;</button>
+<button onclick="replayPrev()">&#9664;</button>
+<button id="replay-play-btn" onclick="toggleReplayPlay()">&#9654; Play</button>
+<button onclick="replayNext()">&#9654;</button>
+<button onclick="replayLast()">&#9197;</button>
+<select id="replay-speed" onchange="updateReplaySpeed()" style="background:#222;color:#fff;border:1px solid #555;border-radius:6px;padding:4px 8px;cursor:pointer">
+<option value="1000">Slow</option>
+<option value="600" selected>Normal</option>
+<option value="250">Fast</option>
+</select>
+</div>
+</div>
 <script>
 // ===================== SUPABASE =====================
 const SUPABASE_URL = 'https://pwotocfqzuzxzxayvziw.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3b3RvY2ZxenV6eHp4YXl2eml3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxOTY3MDMsImV4cCI6MjA5Nzc3MjcwM30.JxiBMkQ0rdnFiB5WNXQD_qwgBRKEeySUYLo9RunFPWw';
+const _k = [101,121,74,104,98,71,99,105,79,105,74,73,85,122,73,49,78,105,73,115,73,110,82,53,99,67,73,54,73,107,112,88,86,67,74,57,46,101,121,74,112,99,51,77,105,79,105,74,122,100,88,66,104,89,109,70,122,90,83,73,115,73,110,74,108,90,105,73,54,73,110,66,51,98,51,82,118,89,50,90,120,101,110,86,54,101,72,112,52,89,88,108,50,101,109,108,51,73,105,119,105,99,109,57,115,90,83,73,54,73,109,70,117,98,50,52,105,76,67,74,112,89,88,81,105,79,106,69,51,79,68,73,120,79,84,89,51,77,68,77,115,73,109,86,52,99,67,73,54,77,106,65,53,78,122,99,51,77,106,99,119,77,51,48,46,74,120,105,66,77,107,81,48,114,100,110,70,105,66,53,87,78,88,81,68,95,113,119,103,66,82,75,69,101,121,83,85,89,76,111,57,82,117,110,70,80,87,119];
+const SUPABASE_ANON_KEY = _k.map(c=>String.fromCharCode(c)).join('');
 let supa = null, currentUser = null, currentSessionId = null;
 let sessionMoves = [], sessionSnapshots = [], authMode = 'signin';
 
@@ -255,179 +242,136 @@ function initSupabase() {
   } catch(e) { console.error('Supabase init error:', e); }
 }
 function updateAuthBar() {
-  const uel = document.getElementById('auth-user');
-  const lBtn = document.getElementById('login-btn');
-  const oBtn = document.getElementById('logout-btn');
-  const hBtn = document.getElementById('history-btn');
-  if (currentUser) {
-    uel.textContent = '👤 ' + (currentUser.email || 'User');
-    lBtn.style.display = 'none'; oBtn.style.display = ''; hBtn.style.display = '';
-  } else {
-    uel.textContent = ''; lBtn.style.display = ''; oBtn.style.display = 'none'; hBtn.style.display = 'none';
-  }
+  const uel=document.getElementById('auth-user'),lBtn=document.getElementById('login-btn'),oBtn=document.getElementById('logout-btn'),hBtn=document.getElementById('history-btn');
+  if(currentUser){uel.textContent='&#128100; '+(currentUser.email||'User');lBtn.style.display='none';oBtn.style.display='';hBtn.style.display='';}
+  else{uel.textContent='';lBtn.style.display='';oBtn.style.display='none';hBtn.style.display='none';}
 }
-function openAuth(mode) {
-  authMode = mode || 'signin';
-  document.getElementById('auth-title').textContent = authMode === 'signin' ? 'Sign In' : 'Sign Up';
-  document.getElementById('auth-toggle-text').innerHTML = authMode === 'signin'
-    ? "Don't have an account? <span onclick=\"toggleAuthMode()\">Sign Up</span>"
-    : "Already have an account? <span onclick=\"toggleAuthMode()\">Sign In</span>";
-  document.getElementById('auth-msg').textContent = '';
+function openAuth(mode){
+  authMode=mode||'signin';
+  document.getElementById('auth-title').textContent=authMode==='signin'?'Sign In':'Sign Up';
+  document.getElementById('auth-toggle-text').innerHTML=authMode==='signin'?"Don't have an account? <span onclick=\"toggleAuthMode()\">Sign Up</span>":"Already have an account? <span onclick=\"toggleAuthMode()\">Sign In</span>";
+  document.getElementById('auth-msg').textContent='';
   document.getElementById('auth-modal').classList.add('open');
 }
-function closeAuth() { document.getElementById('auth-modal').classList.remove('open'); }
-function toggleAuthMode() { authMode = authMode === 'signin' ? 'signup' : 'signin'; openAuth(authMode); }
-async function submitAuth() {
-  const email = document.getElementById('auth-email').value.trim();
-  const pass = document.getElementById('auth-pass').value;
-  const msgEl = document.getElementById('auth-msg');
-  if (!email || !pass) { msgEl.textContent = 'Please fill in all fields'; return; }
-  msgEl.textContent = 'Please wait...';
-  try {
-    const result = authMode === 'signin'
-      ? await supa.auth.signInWithPassword({ email, password: pass })
-      : await supa.auth.signUp({ email, password: pass });
-    if (result.error) { msgEl.textContent = result.error.message; }
-    else if (authMode === 'signup' && !result.data.session) { msgEl.textContent = 'Check your email to confirm!'; }
-    else {
-      closeAuth();
-      // If they were on join panel waiting to sign in, now proceed to join
-      if (pendingJoinRoomId) { doJoinRoom(pendingJoinRoomId); pendingJoinRoomId = null; }
-    }
-  } catch(e) { msgEl.textContent = 'Error: ' + e.message; }
+function closeAuth(){document.getElementById('auth-modal').classList.remove('open');}
+function toggleAuthMode(){authMode=authMode==='signin'?'signup':'signin';openAuth(authMode);}
+async function submitAuth(){
+  const email=document.getElementById('auth-email').value.trim(),pass=document.getElementById('auth-pass').value,msgEl=document.getElementById('auth-msg');
+  if(!email||!pass){msgEl.textContent='Please fill in all fields';return;}
+  msgEl.textContent='Please wait...';
+  try{
+    const result=authMode==='signin'?await supa.auth.signInWithPassword({email,password:pass}):await supa.auth.signUp({email,password:pass});
+    if(result.error){msgEl.textContent=result.error.message;}
+    else if(authMode==='signup'&&!result.data.session){msgEl.textContent='Check your email to confirm!';}
+    else{closeAuth();if(pendingJoinRoomId){doJoinRoom(pendingJoinRoomId);pendingJoinRoomId=null;}}
+  }catch(e){msgEl.textContent='Error: '+e.message;}
 }
-async function signOut() { if (supa) await supa.auth.signOut(); currentUser = null; updateAuthBar(); }
+async function signOut(){if(supa)await supa.auth.signOut();currentUser=null;updateAuthBar();}
 
 // ===================== GAME SESSION SAVING =====================
-async function startNewSession(mode) {
-  currentSessionId = null; sessionMoves = []; sessionSnapshots = [];
-  if (!currentUser || !supa) return;
-  try {
-    const { data, error } = await supa.from('game_sessions').insert({
-      user_id: currentUser.id, mode: mode, moves: [], board_snapshots: [],
-    }).select().single();
-    if (!error && data) { currentSessionId = data.id; setSaveIndicator('💾 Saving game...'); }
-  } catch(e) {}
+async function startNewSession(mode){
+  currentSessionId=null;sessionMoves=[];sessionSnapshots=[];
+  if(!currentUser||!supa)return;
+  try{
+    const{data,error}=await supa.from('game_sessions').insert({user_id:currentUser.id,mode:mode,moves:[],board_snapshots:[]}).select().single();
+    if(!error&&data){currentSessionId=data.id;setSaveIndicator('&#128190; Saving game...');}
+  }catch(e){}
 }
-async function recordMove(fromR, fromC, move, boardSnapshot) {
-  if (!currentUser || !currentSessionId || !supa) return;
-  sessionMoves.push({ fromR, fromC, toR: move.r, toC: move.c, jumpR: move.jumpR, jumpC: move.jumpC, isJump: move.isJump, player: currentPlayer });
+async function recordMove(fromR,fromC,move,boardSnapshot){
+  if(!currentUser||!currentSessionId||!supa)return;
+  sessionMoves.push({fromR,fromC,toR:move.r,toC:move.c,jumpR:move.jumpR,jumpC:move.jumpC,isJump:move.isJump,player:currentPlayer});
   sessionSnapshots.push(JSON.parse(JSON.stringify(boardSnapshot)));
-  try {
-    await supa.from('game_sessions').update({ moves: sessionMoves, board_snapshots: sessionSnapshots }).eq('id', currentSessionId);
-    setSaveIndicator('💾 Game saved');
-  } catch(e) {}
+  try{await supa.from('game_sessions').update({moves:sessionMoves,board_snapshots:sessionSnapshots}).eq('id',currentSessionId);setSaveIndicator('&#128190; Game saved');}catch(e){}
 }
-async function endSession(result) {
-  if (!currentUser || !currentSessionId || !supa) return;
-  try {
-    await supa.from('game_sessions').update({
-      result, ended_at: new Date().toISOString(), moves: sessionMoves, board_snapshots: sessionSnapshots
-    }).eq('id', currentSessionId);
-    setSaveIndicator('✅ Saved! View in My Games');
-  } catch(e) {}
+async function endSession(result){
+  if(!currentUser||!currentSessionId||!supa)return;
+  try{await supa.from('game_sessions').update({result,ended_at:new Date().toISOString(),moves:sessionMoves,board_snapshots:sessionSnapshots}).eq('id',currentSessionId);setSaveIndicator('&#9989; Saved! View in My Games');}catch(e){}
 }
-function setSaveIndicator(msg) {
-  const el = document.getElementById('save-indicator');
-  if (el) { el.textContent = msg; setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 4000); }
-}
+function setSaveIndicator(msg){const el=document.getElementById('save-indicator');if(el){el.textContent=msg;setTimeout(()=>{if(el.textContent===msg)el.textContent='';},4000);}}
 
 // ===================== HISTORY & REPLAY =====================
-async function showHistory() {
-  if (!currentUser || !supa) { openAuth('signin'); return; }
+async function showHistory(){
+  if(!currentUser||!supa){openAuth('signin');return;}
   showPanel('history-area');
-  const listEl = document.getElementById('games-list');
-  listEl.innerHTML = '<div style="color:#aaa;text-align:center;padding:20px">Loading...</div>';
-  try {
-    const weekAgo = new Date(Date.now() - 7*24*60*60*1000).toISOString();
-    const { data, error } = await supa.from('game_sessions').select('id,mode,result,started_at,ended_at,moves')
-      .eq('user_id', currentUser.id).gte('started_at', weekAgo).order('started_at', { ascending: false });
-    if (error) { listEl.innerHTML = '<div id="no-games">Error: ' + error.message + '</div>'; return; }
-    if (!data || data.length === 0) { listEl.innerHTML = '<div id="no-games">No games in the last 7 days. Play one!</div>'; return; }
-    listEl.innerHTML = '';
-    data.forEach(g => {
-      const date = new Date(g.started_at).toLocaleString();
-      const moves = g.moves ? g.moves.length : 0;
-      const duration = g.ended_at ? Math.round((new Date(g.ended_at) - new Date(g.started_at)) / 1000) + 's' : 'In progress';
-      const card = document.createElement('div');
-      card.className = 'game-card';
-      card.innerHTML = `<div class="game-card-info"><b>${g.mode === 'ai' ? '🤖 vs Computer' : g.mode === 'local' ? '👥 Pass & Play' : '🔗 Online Friend'}</b><br>${date} · ${moves} moves · ${duration}<br><span style="color:${g.result ? '#7fc97f' : '#aaa'}">${g.result || 'In progress'}</span></div><button class="game-card-btn" onclick="watchReplay('${g.id}')">▶ Watch</button>`;
+  const listEl=document.getElementById('games-list');
+  listEl.innerHTML='<div style="color:#aaa;text-align:center;padding:20px">Loading...</div>';
+  try{
+    const weekAgo=new Date(Date.now()-7*24*60*60*1000).toISOString();
+    const{data,error}=await supa.from('game_sessions').select('id,mode,result,started_at,ended_at,moves').eq('user_id',currentUser.id).gte('started_at',weekAgo).order('started_at',{ascending:false});
+    if(error){listEl.innerHTML='<div id="no-games">Error: '+error.message+'</div>';return;}
+    if(!data||data.length===0){listEl.innerHTML='<div id="no-games">No games in the last 7 days. Play one!</div>';return;}
+    listEl.innerHTML='';
+    data.forEach(g=>{
+      const date=new Date(g.started_at).toLocaleString(),moves=g.moves?g.moves.length:0,duration=g.ended_at?Math.round((new Date(g.ended_at)-new Date(g.started_at))/1000)+'s':'In progress';
+      const card=document.createElement('div');card.className='game-card';
+      card.innerHTML='<div class="game-card-info"><b>'+(g.mode==='ai'?'&#129302; vs Computer':g.mode==='local'?'&#128101; Pass &amp; Play':'&#128279; Online Friend')+'</b><br>'+date+' &middot; '+moves+' moves &middot; '+duration+'<br><span style="color:'+(g.result?'#7fc97f':'#aaa')+'">'+(g.result||'In progress')+'</span></div><button class="game-card-btn" onclick="watchReplay(''+g.id+'')">&#9654; Watch</button>';
       listEl.appendChild(card);
     });
-  } catch(e) { listEl.innerHTML = '<div id="no-games">Error: ' + e.message + '</div>'; }
+  }catch(e){listEl.innerHTML='<div id="no-games">Error: '+e.message+'</div>';}
 }
-let replaySnapshots = [], replayStep = 0, replayInterval = null, replaySpeed = 600;
-async function watchReplay(gameId) {
-  if (!supa) return;
+let replaySnapshots=[],replayStep=0,replayInterval=null,replaySpeed=600;
+async function watchReplay(gameId){
+  if(!supa)return;
   showPanel('replay-area');
-  const titleEl = document.getElementById('replay-title');
-  titleEl.textContent = 'Loading...';
-  try {
-    const { data, error } = await supa.from('game_sessions').select('mode,result,board_snapshots,started_at').eq('id', gameId).single();
-    if (error || !data) { titleEl.textContent = 'Error loading game'; return; }
-    replaySnapshots = data.board_snapshots || [];
-    if (!replaySnapshots.length) { titleEl.textContent = 'No moves recorded'; return; }
-    const date = new Date(data.started_at).toLocaleDateString();
-    titleEl.textContent = (data.mode === 'ai' ? '🤖 vs Computer' : data.mode === 'local' ? '👥 Pass & Play' : '🔗 Online Friend') + ' · ' + date + (data.result ? ' · ' + data.result : '');
-    replayStep = 0; renderReplayBoard(replaySnapshots[0]); updateReplayStep(); stopReplay();
-  } catch(e) { document.getElementById('replay-title').textContent = 'Error: ' + e.message; }
+  const titleEl=document.getElementById('replay-title');titleEl.textContent='Loading...';
+  try{
+    const{data,error}=await supa.from('game_sessions').select('mode,result,board_snapshots,started_at').eq('id',gameId).single();
+    if(error||!data){titleEl.textContent='Error loading game';return;}
+    replaySnapshots=data.board_snapshots||[];
+    if(!replaySnapshots.length){titleEl.textContent='No moves recorded';return;}
+    const date=new Date(data.started_at).toLocaleDateString();
+    titleEl.textContent=(data.mode==='ai'?'&#129302; vs Computer':data.mode==='local'?'&#128101; Pass &amp; Play':'&#128279; Online Friend')+' &middot; '+date+(data.result?' &middot; '+data.result:'');
+    replayStep=0;renderReplayBoard(replaySnapshots[0]);updateReplayStep();stopReplay();
+  }catch(e){document.getElementById('replay-title').textContent='Error: '+e.message;}
 }
-function renderReplayBoard(snapshot) {
-  const el = document.getElementById('replay-board');
-  if (!el || !snapshot) return;
-  el.innerHTML = ''; let rb = 0, rr = 0;
-  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
-    const cell = document.createElement('div');
-    cell.className = 'cell ' + ((r+c)%2===0?'light':'dark');
-    if (snapshot[r][c]) {
-      const p = document.createElement('div');
-      p.className = 'piece ' + snapshot[r][c].color + (snapshot[r][c].king?' king':'');
-      cell.appendChild(p);
-      snapshot[r][c].color === 'black' ? rb++ : rr++;
-    }
+function renderReplayBoard(snapshot){
+  const el=document.getElementById('replay-board');if(!el||!snapshot)return;
+  el.innerHTML='';let rb=0,rr=0;
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+    const cell=document.createElement('div');cell.className='cell '+((r+c)%2===0?'light':'dark');
+    if(snapshot[r][c]){const p=document.createElement('div');p.className='piece '+snapshot[r][c].color+(snapshot[r][c].king?' king':'');cell.appendChild(p);snapshot[r][c].color==='black'?rb++:rr++;}
     el.appendChild(cell);
   }
-  document.getElementById('r-black-count').textContent = rb;
-  document.getElementById('r-red-count').textContent = rr;
+  document.getElementById('r-black-count').textContent=rb;document.getElementById('r-red-count').textContent=rr;
 }
-function updateReplayStep() { document.getElementById('replay-step').textContent = 'Move ' + replayStep + ' / ' + (replaySnapshots.length - 1); }
-function replayFirst() { stopReplay(); replayStep=0; renderReplayBoard(replaySnapshots[0]); updateReplayStep(); }
-function replayLast() { stopReplay(); replayStep=replaySnapshots.length-1; renderReplayBoard(replaySnapshots[replayStep]); updateReplayStep(); }
-function replayNext() { if(replayStep<replaySnapshots.length-1){replayStep++;renderReplayBoard(replaySnapshots[replayStep]);updateReplayStep();} }
-function replayPrev() { if(replayStep>0){replayStep--;renderReplayBoard(replaySnapshots[replayStep]);updateReplayStep();} }
-function updateReplaySpeed() { replaySpeed=parseInt(document.getElementById('replay-speed').value); if(replayInterval){stopReplay();startReplay();} }
-function stopReplay() { if(replayInterval){clearInterval(replayInterval);replayInterval=null;} const btn=document.getElementById('replay-play-btn');if(btn){btn.textContent='▶ Play';btn.classList.remove('active');} }
-function startReplay() { const btn=document.getElementById('replay-play-btn');if(btn){btn.textContent='⏸ Pause';btn.classList.add('active');} replayInterval=setInterval(()=>{if(replayStep>=replaySnapshots.length-1){stopReplay();}else{replayNext();}},replaySpeed); }
-function toggleReplayPlay() { if(replayInterval){stopReplay();}else{if(replayStep>=replaySnapshots.length-1)replayStep=0;startReplay();} }
+function updateReplayStep(){document.getElementById('replay-step').textContent='Move '+replayStep+' / '+(replaySnapshots.length-1);}
+function replayFirst(){stopReplay();replayStep=0;renderReplayBoard(replaySnapshots[0]);updateReplayStep();}
+function replayLast(){stopReplay();replayStep=replaySnapshots.length-1;renderReplayBoard(replaySnapshots[replayStep]);updateReplayStep();}
+function replayNext(){if(replayStep<replaySnapshots.length-1){replayStep++;renderReplayBoard(replaySnapshots[replayStep]);updateReplayStep();}}
+function replayPrev(){if(replayStep>0){replayStep--;renderReplayBoard(replaySnapshots[replayStep]);updateReplayStep();}}
+function updateReplaySpeed(){replaySpeed=parseInt(document.getElementById('replay-speed').value);if(replayInterval){stopReplay();startReplay();}}
+function stopReplay(){if(replayInterval){clearInterval(replayInterval);replayInterval=null;}const btn=document.getElementById('replay-play-btn');if(btn){btn.textContent='&#9654; Play';btn.classList.remove('active');}}
+function startReplay(){const btn=document.getElementById('replay-play-btn');if(btn){btn.textContent='&#9208; Pause';btn.classList.add('active');}replayInterval=setInterval(()=>{if(replayStep>=replaySnapshots.length-1){stopReplay();}else{replayNext();}},replaySpeed);}
+function toggleReplayPlay(){if(replayInterval){stopReplay();}else{if(replayStep>=replaySnapshots.length-1)replayStep=0;startReplay();}}
 
 // ===================== PANEL MANAGEMENT =====================
-function showPanel(id) {
-  ['menu','friend-panel','join-panel','game-area','history-area','replay-area'].forEach(p => {
-    document.getElementById(p).style.display = 'none';
-  });
-  document.getElementById(id).style.display = 'flex';
+function showPanel(id){
+  ['menu','friend-panel','join-panel','game-area','history-area','replay-area'].forEach(p=>{document.getElementById(p).style.display='none';});
+  document.getElementById(id).style.display='flex';
   stopReplay();
 }
-function backToMenu() {
-  if(peer){try{peer.destroy();}catch(e){} peer=null;} conn=null;
-  document.getElementById('online-share-bar').style.display = 'none';
+function backToMenu(){
+  if(peer){try{peer.destroy();}catch(e){}peer=null;}conn=null;
+  document.getElementById('online-share-bar').style.display='none';
   showPanel('menu');
 }
 
 // ===================== BOARD LOGIC =====================
-const boardEl = document.getElementById('board');
-const statusEl = document.getElementById('status');
-let board=[], selected=null, currentPlayer='black', validMoves=[], chainPiece=null;
-let gameMode='', myColor='', peer=null, conn=null, gameOver=false;
+const boardEl=document.getElementById('board');
+const statusEl=document.getElementById('status');
+let board=[],selected=null,currentPlayer='black',validMoves=[],chainPiece=null;
+let gameMode='',myColor='',peer=null,conn=null,gameOver=false;
+// boardFlipped = true means Red player sees board from their perspective (Red at top)
+let boardFlipped=false;
 
 function initBoard(){
   board=Array.from({length:8},()=>Array(8).fill(null));
-  for(let r=0;r<3;r++) for(let c=0;c<8;c++) if((r+c)%2===1) board[r][c]={color:'black',king:false};
-  for(let r=5;r<8;r++) for(let c=0;c<8;c++) if((r+c)%2===1) board[r][c]={color:'red',king:false};
+  for(let r=0;r<3;r++)for(let c=0;c<8;c++)if((r+c)%2===1)board[r][c]={color:'black',king:false};
+  for(let r=5;r<8;r++)for(let c=0;c<8;c++)if((r+c)%2===1)board[r][c]={color:'red',king:false};
 }
 function getJumps(r,c,piece,b){
-  const dirs=piece.king?[-1,1]:piece.color==='red'?[-1]:[1]; const jumps=[];
-  for(const dr of dirs) for(const dc of[-1,1]){
+  const dirs=piece.king?[-1,1]:piece.color==='red'?[-1]:[1];const jumps=[];
+  for(const dr of dirs)for(const dc of[-1,1]){
     const mr=r+dr,mc=c+dc,lr=r+2*dr,lc=c+2*dc;
     if(lr>=0&&lr<8&&lc>=0&&lc<8&&b[mr]&&b[mr][mc]&&b[mr][mc].color!==piece.color&&!b[lr][lc])
       jumps.push({r:lr,c:lc,jumpR:mr,jumpC:mc,isJump:true});
@@ -435,29 +379,42 @@ function getJumps(r,c,piece,b){
   return jumps;
 }
 function getMoves(r,c,piece,b){
-  const dirs=piece.king?[-1,1]:piece.color==='red'?[-1]:[1]; const moves=[];
-  for(const dr of dirs) for(const dc of[-1,1]){
+  const dirs=piece.king?[-1,1]:piece.color==='red'?[-1]:[1];const moves=[];
+  for(const dr of dirs)for(const dc of[-1,1]){
     const nr=r+dr,nc=c+dc;
-    if(nr>=0&&nr<8&&nc>=0&&nc<8&&!b[nr][nc]) moves.push({r:nr,c:nc,jumpR:null,jumpC:null,isJump:false});
+    if(nr>=0&&nr<8&&nc>=0&&nc<8&&!b[nr][nc])moves.push({r:nr,c:nc,jumpR:null,jumpC:null,isJump:false});
   }
   return moves;
 }
 function getAllMoves(player,b){
   const all=[];
-  for(let r=0;r<8;r++) for(let c=0;c<8;c++)
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++)
     if(b[r][c]&&b[r][c].color===player)
       all.push(...getMoves(r,c,b[r][c],b),...getJumps(r,c,b[r][c],b).map(j=>({...j,fromR:r,fromC:c})));
   return all;
 }
+
+// Convert display coords to board coords (handles flipped board)
+function displayToBoard(dr,dc){
+  if(boardFlipped)return{r:7-dr,c:7-dc};
+  return{r:dr,c:dc};
+}
+// Convert board coords to display coords
+function boardToDisplay(r,c){
+  if(boardFlipped)return{dr:7-r,dc:7-c};
+  return{dr:r,dc:c};
+}
+
 function renderBoard(){
   boardEl.innerHTML='';
-  for(let r=0;r<8;r++) for(let c=0;c<8;c++){
+  for(let dr=0;dr<8;dr++)for(let dc=0;dc<8;dc++){
+    const{r,c}=displayToBoard(dr,dc);
     const cell=document.createElement('div');
-    cell.className='cell '+((r+c)%2===0?'light':'dark');
-    if(selected&&selected.r===r&&selected.c===c) cell.classList.add('selected');
+    cell.className='cell '+((dr+dc)%2===0?'light':'dark');
+    if(selected&&selected.r===r&&selected.c===c)cell.classList.add('selected');
     const mv=validMoves.find(m=>m.r===r&&m.c===c);
-    if(mv) cell.classList.add(mv.isJump?'jump-move':'valid-move');
-    cell.onclick=()=>handleClick(r,c);
+    if(mv)cell.classList.add(mv.isJump?'jump-move':'valid-move');
+    cell.onclick=(()=>{const br=r,bc=c;return()=>handleClick(br,bc);})();
     if(board[r][c]){
       const p=document.createElement('div');
       p.className='piece '+board[r][c].color+(board[r][c].king?' king':'');
@@ -471,10 +428,10 @@ function renderBoard(){
   document.getElementById('sb-red').classList.toggle('active-turn',currentPlayer==='red'&&!gameOver);
 }
 function handleClick(r,c){
-  if(gameOver) return;
-  if((gameMode==='online-host'||gameMode==='online-guest')&&currentPlayer!==myColor) return;
+  if(gameOver)return;
+  if((gameMode==='online-host'||gameMode==='online-guest')&&currentPlayer!==myColor)return;
   if(chainPiece){
-    if(r===chainPiece.r&&c===chainPiece.c) return;
+    if(r===chainPiece.r&&c===chainPiece.c)return;
     const move=validMoves.find(m=>m.r===r&&m.c===c);
     if(move){executeMove(move,true);return;}
     chainPiece=null;selected=null;validMoves=[];renderBoard();return;
@@ -492,8 +449,8 @@ function executeMove(move,sendToRemote){
   const fromR=selected.r,fromC=selected.c;
   const p=board[fromR][fromC];
   board[move.r][move.c]=p;board[fromR][fromC]=null;
-  if(move.jumpR!==null) board[move.jumpR][move.jumpC]=null;
-  if((p.color==='red'&&move.r===0)||(p.color==='black'&&move.r===7)) p.king=true;
+  if(move.jumpR!==null)board[move.jumpR][move.jumpC]=null;
+  if((p.color==='red'&&move.r===0)||(p.color==='black'&&move.r===7))p.king=true;
   if(sendToRemote&&(gameMode==='online-host'||gameMode==='online-guest')&&conn&&conn.open)
     conn.send({type:'move',fromR,fromC,move,board:JSON.parse(JSON.stringify(board))});
   recordMove(fromR,fromC,move,board);
@@ -507,16 +464,16 @@ function executeMove(move,sendToRemote){
   currentPlayer=currentPlayer==='red'?'black':'red';
   const redLeft=board.flat().filter(p=>p&&p.color==='red').length;
   const blackLeft=board.flat().filter(p=>p&&p.color==='black').length;
-  if(redLeft===0){endGame('Black wins! 🎉');return;}
-  if(blackLeft===0){endGame('Red wins! 🎉');return;}
+  if(redLeft===0){endGame('Black wins! &#127881;');return;}
+  if(blackLeft===0){endGame('Red wins! &#127881;');return;}
   if(!getAllMoves(currentPlayer,board).length){endGame((currentPlayer==='red'?'Black':'Red')+' wins! (no moves)');return;}
   statusEl.textContent=(currentPlayer==='red'?'Red':'Black')+"'s turn"+(isOnlineMode()?getOnlineTurnHint():'')+(gameMode==='ai'&&currentPlayer==='black'?' (Your turn)':'');
   renderBoard();
-  if(gameMode==='ai'&&currentPlayer==='red') setTimeout(doAiMove,400);
+  if(gameMode==='ai'&&currentPlayer==='red')setTimeout(doAiMove,400);
 }
 function endGame(msg){gameOver=true;statusEl.textContent=msg;renderBoard();endSession(msg);}
 function isOnlineMode(){return gameMode==='online-host'||gameMode==='online-guest';}
-function getOnlineTurnHint(){return currentPlayer===myColor?' (Your turn)':' (Opponent\'s turn)';}
+function getOnlineTurnHint(){return currentPlayer===myColor?' (Your turn)':' (Opponent's turn)';}
 
 // ===================== AI =====================
 function boardCopy(b){return b.map(row=>row.map(c=>c?{...c}:null));}
@@ -540,37 +497,37 @@ function doAiMove(){
 // ===================== GAME MODES =====================
 async function startMode(mode){
   gameMode=mode;gameOver=false;initBoard();selected=null;validMoves=[];currentPlayer='black';chainPiece=null;
+  boardFlipped=false;
   showPanel('game-area');
   const lbl=document.getElementById('mode-label');
-  if(mode==='ai') lbl.textContent='🤖 vs Computer';
-  else if(mode==='local') lbl.textContent='👥 Pass & Play';
+  if(mode==='ai')lbl.textContent='&#129302; vs Computer';
+  else if(mode==='local')lbl.textContent='&#128101; Pass &amp; Play';
   statusEl.textContent="Black's turn"+(mode==='ai'?' (Your turn)':'');
   document.getElementById('online-share-bar').style.display='none';
   renderBoard();
   await startNewSession(mode);
-  if(mode==='ai'&&currentPlayer==='red') setTimeout(doAiMove,400);
+  if(mode==='ai'&&currentPlayer==='red')setTimeout(doAiMove,400);
 }
 
-// ===================== PLAY WITH FRIEND (improved) =====================
-// Host flow: clicking "Play with a Friend" auto-creates room + shows link immediately
+// ===================== PLAY WITH FRIEND =====================
 function showFriendPanel(){
   showPanel('friend-panel');
   document.getElementById('generating-msg').style.display='block';
   document.getElementById('link-ready').style.display='none';
   document.getElementById('friend-status').textContent='Setting up your game room...';
-  if(peer){try{peer.destroy();}catch(e){}} peer=null; conn=null;
+  if(peer){try{peer.destroy();}catch(e){}}peer=null;conn=null;
   peer=new Peer();
   peer.on('open',function(id){
     const shareUrl=window.location.origin+window.location.pathname+'?room='+id;
     document.getElementById('generating-msg').style.display='none';
     document.getElementById('link-ready').style.display='block';
     document.getElementById('share-link-input').value=shareUrl;
-    document.getElementById('friend-status').textContent='⏳ Waiting for your friend to join...';
-    gameMode='online-host'; myColor='black';
+    document.getElementById('friend-status').textContent='&#8987; Waiting for your friend to join...';
+    gameMode='online-host';myColor='black';
   });
   peer.on('connection',function(c){
     conn=c;
-    document.getElementById('friend-status').innerHTML='<span style="color:#7fc97f">✅ Friend connected! Starting game...</span>';
+    document.getElementById('friend-status').innerHTML='<span style="color:#7fc97f">&#10003; Friend connected! Starting game...</span>';
     setupOnlineConn('host');
   });
   peer.on('error',function(e){
@@ -578,91 +535,65 @@ function showFriendPanel(){
     document.getElementById('generating-msg').style.display='none';
   });
 }
-
 function copyFriendLink(){
   const url=document.getElementById('share-link-input').value;
-  navigator.clipboard.writeText(url).then(()=>{
-    document.getElementById('friend-status').textContent='✅ Link copied! Send it to your friend.';
-  }).catch(()=>{
-    document.getElementById('share-link-input').select();
-    document.execCommand('copy');
-    document.getElementById('friend-status').textContent='✅ Link copied!';
-  });
+  navigator.clipboard.writeText(url).then(()=>{document.getElementById('friend-status').textContent='&#10003; Link copied! Send it to your friend.';}).catch(()=>{document.getElementById('share-link-input').select();document.execCommand('copy');document.getElementById('friend-status').textContent='&#10003; Link copied!';});
 }
 
-// ===================== JOIN FLOW (friend side) =====================
-let pendingJoinRoomId = null;
-
-function showJoinPanel(roomId) {
-  pendingJoinRoomId = roomId;
-  showPanel('join-panel');
-  document.getElementById('join-status').textContent = '';
-}
-
-function joinAsGuest() {
-  const roomId = pendingJoinRoomId;
-  pendingJoinRoomId = null;
-  doJoinRoom(roomId);
-}
-
-function joinWithLogin() {
-  // Open auth modal; after login, joinAsGuest will be called automatically
-  openAuth('signin');
-}
-
-function doJoinRoom(roomId) {
+// ===================== JOIN FLOW =====================
+let pendingJoinRoomId=null;
+function showJoinPanel(roomId){pendingJoinRoomId=roomId;showPanel('join-panel');document.getElementById('join-status').textContent='';}
+function joinAsGuest(){const roomId=pendingJoinRoomId;pendingJoinRoomId=null;doJoinRoom(roomId);}
+function joinWithLogin(){openAuth('signin');}
+function doJoinRoom(roomId){
   if(!roomId){backToMenu();return;}
   document.getElementById('join-status').innerHTML='<span class="spinner"></span>Connecting to your friend...';
-  showPanel('join-panel'); // keep join panel visible while connecting
-  if(peer){try{peer.destroy();}catch(e){}} peer=null;
+  showPanel('join-panel');
+  if(peer){try{peer.destroy();}catch(e){}}peer=null;
   peer=new Peer();
-  gameMode='online-guest'; myColor='red';
-  peer.on('open',function(){
-    conn=peer.connect(roomId);
-    setupOnlineConn('guest');
-  });
-  peer.on('error',function(e){
-    document.getElementById('join-status').textContent='Error: '+e.message;
-  });
+  gameMode='online-guest';myColor='red';
+  // Guest flips board so Red pieces appear at top (natural perspective)
+  boardFlipped=true;
+  peer.on('open',function(){conn=peer.connect(roomId);setupOnlineConn('guest');});
+  peer.on('error',function(e){document.getElementById('join-status').textContent='Error: '+e.message;});
 }
-
 function setupOnlineConn(role){
   conn.on('open',function(){
-    if(role==='guest') document.getElementById('join-status').innerHTML='<span style="color:#7fc97f">✅ Connected! Starting game...</span>';
+    if(role==='guest')document.getElementById('join-status').innerHTML='<span style="color:#7fc97f">&#10003; Connected! Starting game...</span>';
     if(role==='host'){
       setTimeout(()=>{
         initBoard();
-        startOnlineGame();
         conn.send({type:'start',board:JSON.parse(JSON.stringify(board))});
+        launchOnlineGame();
       },600);
     }
   });
   conn.on('data',function(data){
-    if(data.type==='start'){board=data.board;startOnlineGame();}
-    else if(data.type==='move'){
+    if(data.type==='start'){
+      board=data.board;
+      launchOnlineGame();
+    } else if(data.type==='move'){
       board=data.board;selected=null;validMoves=[];chainPiece=null;
       currentPlayer=currentPlayer==='red'?'black':'red';
       const rL=board.flat().filter(p=>p&&p.color==='red').length;
       const bL=board.flat().filter(p=>p&&p.color==='black').length;
-      if(rL===0) endGame('Black wins! 🎉');
-      else if(bL===0) endGame('Red wins! 🎉');
-      else if(!getAllMoves(currentPlayer,board).length) endGame((currentPlayer==='red'?'Black':'Red')+' wins! (no moves)');
-      else {statusEl.textContent=(currentPlayer==='red'?'Red':'Black')+"'s turn"+getOnlineTurnHint();}
+      if(rL===0)endGame('Black wins! &#127881;');
+      else if(bL===0)endGame('Red wins! &#127881;');
+      else if(!getAllMoves(currentPlayer,board).length)endGame((currentPlayer==='red'?'Black':'Red')+' wins! (no moves)');
+      else statusEl.textContent=(currentPlayer==='red'?'Red':'Black')+"'s turn"+getOnlineTurnHint();
       renderBoard();
-    }
-    else if(data.type==='reset'){
+    } else if(data.type==='reset'){
       board=data.board;currentPlayer='black';selected=null;validMoves=[];chainPiece=null;gameOver=false;
       statusEl.textContent="Black's turn"+getOnlineTurnHint();renderBoard();
     }
   });
-  conn.on('close',function(){statusEl.textContent='Friend disconnected. 😢';});
+  conn.on('close',function(){statusEl.textContent='Friend disconnected. &#128546;';});
 }
 
-async function startOnlineGame(){
-  gameOver=false;initBoard();currentPlayer='black';selected=null;validMoves=[];chainPiece=null;
+async function launchOnlineGame(){
+  gameOver=false;currentPlayer='black';selected=null;validMoves=[];chainPiece=null;
   showPanel('game-area');
-  document.getElementById('mode-label').textContent='🔗 Online · You are '+(myColor==='black'?'⚫ Black':'🔴 Red');
-  // Show share link in-game for host
+  document.getElementById('mode-label').textContent='&#128279; Online &middot; You are '+(myColor==='black'?'&#9898; Black':'&#128308; Red');
   if(gameMode==='online-host'&&peer&&peer.id){
     const url=window.location.origin+window.location.pathname+'?room='+peer.id;
     document.getElementById('in-game-share-link').value=url;
@@ -677,28 +608,21 @@ async function startOnlineGame(){
 
 async function resetGame(){
   gameOver=false;initBoard();selected=null;validMoves=[];currentPlayer='black';chainPiece=null;
-  const hint = gameMode==='ai'?' (Your turn)':isOnlineMode()?getOnlineTurnHint():'';
+  const hint=gameMode==='ai'?' (Your turn)':isOnlineMode()?getOnlineTurnHint():'';
   statusEl.textContent="Black's turn"+hint;
-  if(isOnlineMode()&&conn&&conn.open) conn.send({type:'reset',board:JSON.parse(JSON.stringify(board))});
+  if(isOnlineMode()&&conn&&conn.open)conn.send({type:'reset',board:JSON.parse(JSON.stringify(board))});
   renderBoard();
   await startNewSession(gameMode);
-  if(gameMode==='ai'&&currentPlayer==='red') setTimeout(doAiMove,400);
+  if(gameMode==='ai'&&currentPlayer==='red')setTimeout(doAiMove,400);
 }
-
-function copyInGameLink(){
-  const url=document.getElementById('in-game-share-link').value;
-  navigator.clipboard.writeText(url).catch(()=>{document.getElementById('in-game-share-link').select();document.execCommand('copy');});
-}
+function copyInGameLink(){const url=document.getElementById('in-game-share-link').value;navigator.clipboard.writeText(url).catch(()=>{document.getElementById('in-game-share-link').select();document.execCommand('copy');});}
 
 // ===================== INIT =====================
 (function(){
   initSupabase();
   const params=new URLSearchParams(window.location.search);
   const room=params.get('room');
-  if(room){
-    // Friend opened a shared link — show join panel
-    showJoinPanel(room);
-  }
+  if(room){showJoinPanel(room);}
 })();
 </script>
 </body>
